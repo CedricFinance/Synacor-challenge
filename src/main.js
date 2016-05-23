@@ -8,6 +8,12 @@ function debug(message) {
   }
 }
 
+function exit() {
+  console.log(`Registers: ${registers}`);
+
+  process.exit(1)
+}
+
 var registers = new Array(8).fill(0)
 var stack = []
 var memory = []
@@ -42,7 +48,7 @@ while (true) {
 
   switch (opcode) {
     case 0:
-      process.exit(1)
+      exit()
       break;
     case 1:
       var register = next();
@@ -115,6 +121,13 @@ while (true) {
       var b = next()
       debug(`PC: ${oldPC} ADD ${dest} ${a} ${b}`);
       setRegister(dest, a + b)
+      break;
+    case 12:
+      var dest = next()
+      var a = next()
+      var b = next()
+      debug(`PC: ${oldPC} AND ${dest} ${a} ${b}`);
+      setRegister(dest, a & b)
       break;
     case 19:
       var char = next()
