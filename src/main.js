@@ -122,6 +122,20 @@ while (true) {
       debug(`PC: ${oldPC} ADD ${dest} ${a} ${b}`);
       setRegister(dest, (a + b) % 32768)
       break;
+    case 10:
+      var dest = next()
+      var a = next()
+      var b = next()
+      debug(`PC: ${oldPC} MULT ${dest} ${a} ${b}`);
+      setRegister(dest, (a * b) % 32768)
+      break;
+    case 11:
+      var dest = next()
+      var a = next()
+      var b = next()
+      debug(`PC: ${oldPC} MOD ${dest} ${a} ${b}`);
+      setRegister(dest, a % b)
+      break;
     case 12:
       var dest = next()
       var a = next()
