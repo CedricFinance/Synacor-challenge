@@ -28,11 +28,15 @@ function decodeValue(v) {
   if (v < 32768) {
     return v
   }
-  return registers[v - 32768]
+  return readRegister(v)
 }
 
-function setRegister(register, value) {
+function writeRegister(register, value) {
   registers[register - 32768] = value
+}
+
+function readRegister(register) {
+  return registers[register - 32768]
 }
 
 function next() {
@@ -54,7 +58,7 @@ while (true) {
       var register = next();
       var value = next()
       debug(`PC: ${oldPC} set ${register} ${value}`)
-      setRegister(register, value)
+      writeRegister(register, value)
       break;
     case 2:
       var rawA = next()
@@ -64,7 +68,7 @@ while (true) {
     case 3:
       var dest = next()
       debug(`PC: ${oldPC} pop ${dest}`)
-      setRegister(dest, stack.pop())
+      writeRegister(dest, stack.pop())
       break;
     case 4:
       var dest = next();
@@ -72,9 +76,9 @@ while (true) {
       var rawB = next();
       debug(`PC: ${oldPC} EQ ${dest} ${rawA} ${rawB}`);
       if (decodeValue(rawA) === decodeValue(rawB)) {
-        setRegister(dest, 1)
+        writeRegister(dest, 1)
       } else {
-        setRegister(dest, 0)
+        writeRegister(dest, 0)
       }
       break;
     case 5:
@@ -83,9 +87,9 @@ while (true) {
       var rawB = next();
       debug(`PC: ${oldPC} GT ${dest} ${rawA} ${rawB}`);
       if (decodeValue(rawA) > decodeValue(rawB)) {
-        setRegister(dest, 1)
+        writeRegister(dest, 1)
       } else {
-        setRegister(dest, 0)
+        writeRegister(dest, 0)
       }
       break;
     case 6:
@@ -98,7 +102,7 @@ while (true) {
       var address = next()
       debug(`PC: ${oldPC} JT ${value} ${address}`);
       if (value > 32767) {
-        value = registers[value - 32768]
+        value = readRegister(value)
       }
       if (value !== 0) {
         pc = address
@@ -109,7 +113,7 @@ while (true) {
       var address = next()
       debug(`PC: ${oldPC} JF ${value} ${address}`);
       if (value > 32767) {
-        value = registers[value - 32768]
+        value = readRegister(value)
       }
       if (value === 0) {
         pc = address
@@ -120,41 +124,53 @@ while (true) {
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} ADD ${dest} ${a} ${b}`);
-      setRegister(dest, (a + b) % 32768)
+      writeRegister(dest, (a + b) % 32768)
       break;
     case 10:
       var dest = next()
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} MULT ${dest} ${a} ${b}`);
-      setRegister(dest, (a * b) % 32768)
+      writeRegister(dest, (a * b) % 32768)
       break;
     case 11:
       var dest = next()
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} MOD ${dest} ${a} ${b}`);
-      setRegister(dest, a % b)
+      writeRegister(dest, a % b)
       break;
     case 12:
       var dest = next()
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} AND ${dest} ${a} ${b}`);
-      setRegister(dest, a & b)
+      writeRegister(dest, a & b)
       break;
     case 13:
       var dest = next()
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} OR ${dest} ${a} ${b}`);
-      setRegister(dest, a | b)
+      writeRegister(dest, a | b)
       break;
     case 14:
       var dest = next()
       var a = next()
       debug(`PC: ${oldPC} NOT ${dest} ${a}`);
-      setRegister(dest, ~ a & 32767)
+      writeRegister(dest, ~ a & 32767)
+      break;
+    case 15:
+      var dest = next()
+      var a = next()
+      debug(`PC: ${oldPC} RMEM ${dest} ${a}`);
+      writeRegister(dest, memory[decodeValue(a)])
+      break;
+    case 16:
+      var dest = next()
+      var a = next()
+      debug(`PC: ${oldPC} WMEM ${dest} ${a}`);
+      memory[readRegister(dest)] = decodeValue(a)
       break;
     case 17:
       var address = next()
