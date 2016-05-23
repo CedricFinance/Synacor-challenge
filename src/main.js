@@ -120,7 +120,7 @@ while (true) {
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} ADD ${dest} ${a} ${b}`);
-      setRegister(dest, a + b)
+      setRegister(dest, (a + b) % 32768)
       break;
     case 12:
       var dest = next()
