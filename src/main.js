@@ -9,6 +9,7 @@ function debug(message) {
 }
 
 var registers = new Array(8).fill(0)
+var stack = []
 var memory = []
 var data = fs.readFileSync('challenge.bin')
 for(var i=0; i < data.byteLength/2; i++) {
@@ -22,6 +23,10 @@ function decodeValue(v) {
     return v
   }
   return registers[v - 32768]
+}
+
+function setRegister(register, value) {
+  registers[register - 32768] = value
 }
 
 function next() {
@@ -43,17 +48,38 @@ while (true) {
       var register = next();
       var value = next()
       debug(`PC: ${oldPC} set ${register} ${value}`)
-      registers[register-32768] = value
-      break
+      setRegister(register, value)
+      break;
+    case 2:
+      var rawA = next()
+      debug(`PC: ${oldPC} push ${rawA}`)
+      stack.push(decodeValue(rawA))
+      break;
+    case 3:
+      var dest = next()
+      debug(`PC: ${oldPC} pop ${dest}`)
+      setRegister(dest, stack.pop())
+      break;
     case 4:
       var dest = next();
       var rawA = next();
       var rawB = next();
       debug(`PC: ${oldPC} EQ ${dest} ${rawA} ${rawB}`);
-      if (decodeValue(a) === decodeValue(b)) {
-        registers[dest - 32768] = 1
+      if (decodeValue(rawA) === decodeValue(rawB)) {
+        setRegister(dest, 1)
       } else {
-        registers[dest - 32768] = 0
+        setRegister(dest, 0)
+      }
+      break;
+    case 5:
+      var dest = next();
+      var rawA = next();
+      var rawB = next();
+      debug(`PC: ${oldPC} GT ${dest} ${rawA} ${rawB}`);
+      if (decodeValue(rawA) > decodeValue(rawB)) {
+        setRegister(dest, 1)
+      } else {
+        setRegister(dest, 0)
       }
       break;
     case 6:
@@ -88,7 +114,7 @@ while (true) {
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} ADD ${dest} ${a} ${b}`);
-      registers[dest - 32768] = a + b
+      setRegister(dest, a + b)
       break;
     case 19:
       var char = next()
