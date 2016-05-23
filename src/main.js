@@ -142,6 +142,12 @@ while (true) {
       debug(`PC: ${oldPC} NOT ${dest} ${a}`);
       setRegister(dest, ~ a & 32767)
       break;
+    case 17:
+      var address = next()
+      debug(`PC: ${oldPC} CALL ${address}`);
+      stack.push(pc);
+      pc = decodeValue(address)
+      break;
     case 19:
       var char = next()
       var c = String.fromCharCode(char)
