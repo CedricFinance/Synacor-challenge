@@ -1,0 +1,17 @@
+{
+  "name": "data",
+  "version": "1.0.0",
+  "main": "src/main.js",
+  "scripts": {
+    "run": "node src/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "inquirer": "^1.0.2"
+  },
+  "devDependencies": {},
+  "description": ""
+}
