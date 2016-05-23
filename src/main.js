@@ -25,7 +25,7 @@ for(var i=0; i < data.byteLength/2; i++) {
 var pc = 0
 
 function decodeValue(v) {
-  if (v < 32767) {
+  if (v < 32768) {
     return v
   }
   return registers[v - 32768]
@@ -128,6 +128,19 @@ while (true) {
       var b = next()
       debug(`PC: ${oldPC} AND ${dest} ${a} ${b}`);
       setRegister(dest, a & b)
+      break;
+    case 13:
+      var dest = next()
+      var a = next()
+      var b = next()
+      debug(`PC: ${oldPC} OR ${dest} ${a} ${b}`);
+      setRegister(dest, a | b)
+      break;
+    case 14:
+      var dest = next()
+      var a = next()
+      debug(`PC: ${oldPC} NOT ${dest} ${a}`);
+      setRegister(dest, ~ a & 32767)
       break;
     case 19:
       var char = next()
