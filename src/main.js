@@ -31,11 +31,19 @@ function decodeValue(v) {
   return readRegister(v)
 }
 
+function validateRegister(register) {
+  if (register < 32768 || register > 32775) {
+    throw new Error(`Invalid register ${register}`)
+  }
+}
+
 function writeRegister(register, value) {
+  validateRegister(register)
   registers[register - 32768] = value
 }
 
 function readRegister(register) {
+  validateRegister(register)
   return registers[register - 32768]
 }
 
