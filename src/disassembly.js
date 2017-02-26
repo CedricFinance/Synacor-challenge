@@ -60,6 +60,17 @@ function hexParams(params) {
   return params.map(toHexString);
 }
 
+function toValueOrRegister(v) {
+  if (v < 32768) {
+    return sprintf("%04x", v);
+  }
+  return "r"+(v-32768);
+}
+
+function decodeConditionals([value, address]) {
+  return [ toValueOrRegister(value), toHexString(address) ];
+}
+
 const opcodes = [
   { value: 0,  length: 1, name: "halt", decodeParameters: hexParams },
   { value: 1,  length: 3, name: "set",  decodeParameters: hexParams },
@@ -68,8 +79,8 @@ const opcodes = [
   { value: 4,  length: 4, name: "eq",   decodeParameters: hexParams },
   { value: 5,  length: 4, name: "gt",   decodeParameters: hexParams },
   { value: 6,  length: 2, name: "jmp",  decodeParameters: hexParams },
-  { value: 7,  length: 3, name: "jt",   decodeParameters: hexParams },
-  { value: 8,  length: 3, name: "jf",   decodeParameters: hexParams },
+  { value: 7,  length: 3, name: "jt",   decodeParameters: decodeConditionals },
+  { value: 8,  length: 3, name: "jf",   decodeParameters: decodeConditionals },
   { value: 9,  length: 4, name: "add",  decodeParameters: hexParams },
   { value: 10, length: 4, name: "mult", decodeParameters: hexParams },
   { value: 11, length: 4, name: "mod",  decodeParameters: hexParams },
