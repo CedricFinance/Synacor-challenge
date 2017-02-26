@@ -16,6 +16,19 @@ function printCode(address, result) {
   ));
 }
 
+function mergeOutOpcode(mergedOut, result) {
+  if (typeof mergedOut === "undefined") {
+    mergedOut = {
+      opcode: result.opcode,
+      rawParameters: result.rawParameters.slice(0),
+      decodedParameters: ["''"]
+    };
+  }
+
+  mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + result.decodedParameters.slice(1);
+  return mergedOut;
+}
+
 function disassemble(program, startAddress, maxAddress) {
   let address = startAddress;
   let mergedOut;
@@ -24,18 +37,9 @@ function disassemble(program, startAddress, maxAddress) {
     let result = disassembleAt(program, address);
 
     if (result.opcode.value === 19) {
-      if (typeof mergedOut === "undefined") {
-        mergedOut = {
-          opcode: result.opcode,
-          rawParameters: result.rawParameters.slice(0),
-          decodedParameters: ["''"]
-        };
-      }
-
-      mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + result.decodedParameters.slice(1);
+      mergedOut = mergeOutOpcode(mergedOut, result);
 
       if (result.rawParameters[0] === 10) {
-        print = true;
         result = mergedOut;
         mergedOut = undefined;
       } else {
