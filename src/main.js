@@ -186,6 +186,10 @@ while (true) {
       stack.push(pc);
       pc = decodeValue(address)
       break;
+    case 18:
+      debug(`PC: ${oldPC} RET`);
+      pc = stack.pop()
+      break;
     case 19:
       var char = next()
       var c = String.fromCharCode(char)
