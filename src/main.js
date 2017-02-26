@@ -1,4 +1,5 @@
 var fs = require('fs')
+const disassemble = require('./disassembly').disassemble;
 
 debug_enabled = false
 
@@ -52,6 +53,8 @@ function next() {
   pc++
   return value;
 }
+
+disassemble(memory, 0, 1200);
 
 while (true) {
 
