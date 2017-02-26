@@ -1,6 +1,6 @@
 var fs = require('fs')
 
-debug_enabled = true
+debug_enabled = false
 
 function debug(message) {
   if (debug_enabled) {
