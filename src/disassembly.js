@@ -4,9 +4,9 @@ function toHexString(value) {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
 }
 
-function printCode(address, result) {
+function printCode(result) {
   console.log(sprintf("0x%06x %04x %4s %4s %4s %s %s",
-    address,
+    result.address,
     result.opcode.value,
     toHexString(result.rawParameters[0]),
     toHexString(result.rawParameters[1]),
@@ -19,6 +19,7 @@ function printCode(address, result) {
 function mergeOutOpcode(mergedOut, result) {
   if (typeof mergedOut === "undefined") {
     mergedOut = {
+      address: result.address,
       opcode: result.opcode,
       rawParameters: result.rawParameters.slice(0),
       decodedParameters: ["''"]
@@ -48,7 +49,7 @@ function disassemble(program, startAddress, maxAddress) {
     }
 
     if (print) {
-      printCode(address, result);
+      printCode(result);
     }
 
     address += result.opcode.length
@@ -94,6 +95,7 @@ function disassembleAt(program, address) {
 
   if (value > opcodes.length) {
     return {
+      address,
       opcode: { value, name: '???', length: 1 },
       rawParameters: [],
       decodedParameters: []
@@ -104,6 +106,7 @@ function disassembleAt(program, address) {
   const rawParameters = program.slice(address+1, address+1+opcode.length-1);
 
   const result = {
+    address,
     opcode,
     rawParameters,
     decodedParameters: opcode.decodeParameters(rawParameters).join(" ")
