@@ -54,7 +54,7 @@ function next() {
   return value;
 }
 
-disassemble(memory, 0, 1200);
+disassemble(memory, 0, 2000);
 
 while (true) {
 
@@ -195,7 +195,7 @@ while (true) {
       break;
     case 19:
       var char = next()
-      var c = String.fromCharCode(char)
+      var c = String.fromCharCode(decodeValue(char))
       //debug(`PC: ${oldPC} putc ${c}`);
       process.stdout.write(c);
       break;
