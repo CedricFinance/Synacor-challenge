@@ -1,14 +1,8 @@
 var fs = require('fs')
-const disassemble = require('./disassembly').disassemble;
+const { disassemble, printCodeAt } = require('./disassembly');
 const Promise = require('bluebird');
 
 debug_enabled = false
-
-function debug(message) {
-  if (debug_enabled) {
-    console.error(message);
-  }
-}
 
 function exit() {
   console.log(`Registers: ${registers}`);
@@ -59,6 +53,9 @@ disassemble(memory, 0, 2000);
 
 function* run() {
   while (true) {
+    if (debug_enabled) {
+      printCodeAt(memory, pc);
+    }
 
     var oldPC = pc
     var opcode = next();

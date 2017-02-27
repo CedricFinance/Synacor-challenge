@@ -239,6 +239,11 @@ function disassembleAt(program, address) {
   return result;
 }
 
+function printCodeAt(program, address) {
+  printCode(disassembleAt(program, address));
+}
+
 module.exports = {
-  disassemble
+  disassemble,
+  printCodeAt
 }
