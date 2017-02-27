@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.4.7",
     "debug": "^2.2.0",
     "inquirer": "^1.0.2",
     "sprintf": "^0.1.5"
