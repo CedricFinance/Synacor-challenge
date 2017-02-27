@@ -11,8 +11,15 @@ const labels = {
   0x01e7: "jf_test_no_jump",
   0x01ea: "jt_test_jump",
   0x01ef: "jf_test_jump",
-  0x01f4: "r0_init_value",
-  0x0432: "no_jt_jf"
+  0x01f4: "r0_initial_value",
+  0x01f7: "r1_initial_value",
+  0x01fa: "r2_initial_value",
+  0x01fd: "r3_initial_value",
+  0x0200: "r4_initial_value",
+  0x0203: "r5_initial_value",
+  0x0206: "r6_initial_value",
+  0x0209: "r7_initial_value",
+  0x0432: "no_jt_jf",
 }
 
 function labelFor(address) {
