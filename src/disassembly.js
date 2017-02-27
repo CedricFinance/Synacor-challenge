@@ -20,6 +20,8 @@ const labels = {
   0x0206: "r6_initial_value",
   0x0209: "r7_initial_value",
   0x0432: "no_jt_jf",
+  0x0445: "non_zero_register",
+  0x045e: "no_set",
 }
 
 function labelFor(address) {
@@ -31,7 +33,7 @@ function toHexString(value) {
 }
 
 function printCode(result) {
-  console.log(sprintf("0x%06x %04x %4s %4s %4s %-16s %s %s",
+  console.log(sprintf("0x%06x %04x %4s %4s %4s %-24s %s %s",
     result.address,
     result.opcode.value,
     toHexString(result.rawParameters[0]),
@@ -97,11 +99,15 @@ function toAddressOrLabel(address) {
   return toHexString(address);
 }
 
+function toRegister(v) {
+  return "r"+(v-32768);
+}
+
 function toValueOrRegister(v) {
   if (v < 32768) {
     return sprintf("%04x", v);
   }
-  return "r"+(v-32768);
+  return toRegister(v);
 }
 
 function decodeConditionals([value, address]) {
@@ -112,9 +118,13 @@ function decodeOneAddress([address]) {
   return [ toAddressOrLabel(address) ];
 }
 
+function decodeRegisterAndValue([register, value]) {
+  return [ toRegister(register), value ];
+}
+
 const opcodes = [
   { value: 0,  length: 1, name: "halt", decodeParameters: hexParams },
-  { value: 1,  length: 3, name: "set",  decodeParameters: hexParams },
+  { value: 1,  length: 3, name: "set",  decodeParameters: decodeRegisterAndValue },
   { value: 2,  length: 2, name: "push", decodeParameters: hexParams },
   { value: 3,  length: 2, name: "pop",  decodeParameters: hexParams },
   { value: 4,  length: 4, name: "eq",   decodeParameters: hexParams },
