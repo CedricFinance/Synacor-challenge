@@ -1,16 +1,36 @@
 const sprintf = require('sprintf').sprintf;
 
+const labels = {
+  0x015b: "jmp_test_1",
+  0x0170: "bad_jmp_minus_2",
+  0x018d: "bad_jmp_minus_1",
+  0x01a8: "bad_jmp_plus_1",
+  0x01c5: "bad_jmp_plus_2",
+  0x0166: "jmp_test_2",
+  0x01e4: "jt_test_no_jump",
+  0x01e7: "jf_test_no_jump",
+  0x01ea: "jt_test_jump",
+  0x01ef: "jf_test_jump",
+  0x01f4: "r0_init_value",
+  0x0432: "no_jt_jf"
+}
+
+function labelFor(address) {
+  return labels[address] || "";
+}
+
 function toHexString(value) {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
 }
 
 function printCode(result) {
-  console.log(sprintf("0x%06x %04x %4s %4s %4s %s %s",
+  console.log(sprintf("0x%06x %04x %4s %4s %4s %-16s %s %s",
     result.address,
     result.opcode.value,
     toHexString(result.rawParameters[0]),
     toHexString(result.rawParameters[1]),
     toHexString(result.rawParameters[2]),
+    labelFor(result.address),
     result.opcode.name,
     result.decodedParameters
   ));
@@ -60,6 +80,16 @@ function hexParams(params) {
   return params.map(toHexString);
 }
 
+function toAddressOrLabel(address) {
+  const label = labelFor(address);
+
+  if (label.length > 0) {
+    return label;
+  }
+
+  return toHexString(address);
+}
+
 function toValueOrRegister(v) {
   if (v < 32768) {
     return sprintf("%04x", v);
@@ -68,7 +98,11 @@ function toValueOrRegister(v) {
 }
 
 function decodeConditionals([value, address]) {
-  return [ toValueOrRegister(value), toHexString(address) ];
+  return [ toValueOrRegister(value), toAddressOrLabel(address) ];
+}
+
+function decodeOneAddress([address]) {
+  return [ toAddressOrLabel(address) ];
 }
 
 const opcodes = [
@@ -78,7 +112,7 @@ const opcodes = [
   { value: 3,  length: 2, name: "pop",  decodeParameters: hexParams },
   { value: 4,  length: 4, name: "eq",   decodeParameters: hexParams },
   { value: 5,  length: 4, name: "gt",   decodeParameters: hexParams },
-  { value: 6,  length: 2, name: "jmp",  decodeParameters: hexParams },
+  { value: 6,  length: 2, name: "jmp",  decodeParameters: decodeOneAddress },
   { value: 7,  length: 3, name: "jt",   decodeParameters: decodeConditionals },
   { value: 8,  length: 3, name: "jf",   decodeParameters: decodeConditionals },
   { value: 9,  length: 4, name: "add",  decodeParameters: hexParams },
