@@ -69,7 +69,7 @@ while (true) {
       var register = next();
       var value = next()
       debug(`PC: ${oldPC} set ${register} ${value}`)
-      writeRegister(register, value)
+      writeRegister(register, decodeValue(value))
       break;
     case 2:
       var rawA = next()
@@ -135,41 +135,41 @@ while (true) {
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} ADD ${dest} ${a} ${b}`);
-      writeRegister(dest, (a + b) % 32768)
+      writeRegister(dest, (decodeValue(a) + decodeValue(b)) % 32768)
       break;
     case 10:
       var dest = next()
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} MULT ${dest} ${a} ${b}`);
-      writeRegister(dest, (a * b) % 32768)
+      writeRegister(dest, (decodeValue(a) * decodeValue(b)) % 32768)
       break;
     case 11:
       var dest = next()
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} MOD ${dest} ${a} ${b}`);
-      writeRegister(dest, a % b)
+      writeRegister(dest, decodeValue(a) % decodeValue(b))
       break;
     case 12:
       var dest = next()
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} AND ${dest} ${a} ${b}`);
-      writeRegister(dest, a & b)
+      writeRegister(dest, decodeValue(a) & decodeValue(b))
       break;
     case 13:
       var dest = next()
       var a = next()
       var b = next()
       debug(`PC: ${oldPC} OR ${dest} ${a} ${b}`);
-      writeRegister(dest, a | b)
+      writeRegister(dest, decodeValue(a) | decodeValue(b))
       break;
     case 14:
       var dest = next()
       var a = next()
       debug(`PC: ${oldPC} NOT ${dest} ${a}`);
-      writeRegister(dest, ~ a & 32767)
+      writeRegister(dest, ~ decodeValue(a) & 32767)
       break;
     case 15:
       var dest = next()
@@ -181,7 +181,7 @@ while (true) {
       var dest = next()
       var a = next()
       debug(`PC: ${oldPC} WMEM ${dest} ${a}`);
-      memory[readRegister(dest)] = decodeValue(a)
+      memory[decodeValue(dest)] = decodeValue(a)
       break;
     case 17:
       var address = next()
