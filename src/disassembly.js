@@ -19,9 +19,23 @@ const labels = {
   0x0203: "r5_initial_value",
   0x0206: "r6_initial_value",
   0x0209: "r7_initial_value",
+  0x021f: "no_add",
+  0x0234: "eq_test",
+  0x023b: "no_eq",
+  0x024e: "push_pop_test",
+  0x0264: "gt_test",
+  0x0279: "and_test",
+  0x0284: "or_test",
+  0x028f: "no_or",
+  0x02ac: "not_test",
+  0x02c0: "call_test",
   0x0432: "no_jt_jf",
   0x0445: "non_zero_register",
   0x045e: "no_set",
+  0x0473: "no_gt",
+  0x0486: "no_stack",
+  0x0499: "no_and",
+  0x04b8: "no_not",
 }
 
 function labelFor(address) {
@@ -105,7 +119,7 @@ function toRegister(v) {
 
 function toValueOrRegister(v) {
   if (v < 32768) {
-    return sprintf("%04x", v);
+    return toHexString(v);
   }
   return toRegister(v);
 }
@@ -118,26 +132,42 @@ function decodeOneAddress([address]) {
   return [ toAddressOrLabel(address) ];
 }
 
+function decodeOneRegister([register]) {
+  return [ toRegister(register) ];
+}
+
 function decodeRegisterAndValue([register, value]) {
-  return [ toRegister(register), value ];
+  return [ toRegister(register), toHexString(value) ];
+}
+
+function decodeRegisterOrValue([registerOrValue]) {
+  return [ toValueOrRegister(registerOrValue) ];
+}
+
+function decodeRegisterAndTwoValues([register, first, second]) {
+  return [ toRegister(register), toHexString(first), toHexString(second) ];
+}
+
+function decodeRegisterAndTwoValueOrRegister([register, first, second]) {
+  return [ toRegister(register), toValueOrRegister(first), toValueOrRegister(second) ];
 }
 
 const opcodes = [
   { value: 0,  length: 1, name: "halt", decodeParameters: hexParams },
   { value: 1,  length: 3, name: "set",  decodeParameters: decodeRegisterAndValue },
-  { value: 2,  length: 2, name: "push", decodeParameters: hexParams },
-  { value: 3,  length: 2, name: "pop",  decodeParameters: hexParams },
-  { value: 4,  length: 4, name: "eq",   decodeParameters: hexParams },
-  { value: 5,  length: 4, name: "gt",   decodeParameters: hexParams },
+  { value: 2,  length: 2, name: "push", decodeParameters: decodeRegisterOrValue },
+  { value: 3,  length: 2, name: "pop",  decodeParameters: decodeOneRegister },
+  { value: 4,  length: 4, name: "eq",   decodeParameters: decodeRegisterAndTwoValueOrRegister },
+  { value: 5,  length: 4, name: "gt",   decodeParameters: decodeRegisterAndTwoValueOrRegister },
   { value: 6,  length: 2, name: "jmp",  decodeParameters: decodeOneAddress },
   { value: 7,  length: 3, name: "jt",   decodeParameters: decodeConditionals },
   { value: 8,  length: 3, name: "jf",   decodeParameters: decodeConditionals },
-  { value: 9,  length: 4, name: "add",  decodeParameters: hexParams },
-  { value: 10, length: 4, name: "mult", decodeParameters: hexParams },
-  { value: 11, length: 4, name: "mod",  decodeParameters: hexParams },
-  { value: 12, length: 4, name: "and",  decodeParameters: hexParams },
-  { value: 13, length: 4, name: "or",   decodeParameters: hexParams },
-  { value: 14, length: 3, name: "not",  decodeParameters: hexParams },
+  { value: 9,  length: 4, name: "add",  decodeParameters: decodeRegisterAndTwoValues },
+  { value: 10, length: 4, name: "mult", decodeParameters: decodeRegisterAndTwoValues },
+  { value: 11, length: 4, name: "mod",  decodeParameters: decodeRegisterAndTwoValues },
+  { value: 12, length: 4, name: "and",  decodeParameters: decodeRegisterAndTwoValues },
+  { value: 13, length: 4, name: "or",   decodeParameters: decodeRegisterAndTwoValues },
+  { value: 14, length: 3, name: "not",  decodeParameters: decodeRegisterAndValue },
   { value: 15, length: 3, name: "rmem", decodeParameters: hexParams },
   { value: 16, length: 3, name: "wmem", decodeParameters: hexParams },
   { value: 17, length: 2, name: "call", decodeParameters: hexParams },
