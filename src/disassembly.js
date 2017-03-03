@@ -149,6 +149,13 @@ function toRegister(v) {
   return "r"+(v-32768);
 }
 
+function toAddressOrRegister(v) {
+  if (v < 32768) {
+    return toAddressOrLabel(v);
+  }
+  return toRegister(v);
+}
+
 function toValueOrRegister(v) {
   if (v < 32768) {
     return toHexString(v);
@@ -173,6 +180,10 @@ function decodeRegisterAndValue([register, value]) {
   validateRegister(register);
   validateValue(value);
   return [ toRegister(register), toHexString(value) ];
+}
+
+function decodeRegisterOrAddress([registerOrAddress]) {
+  return [ toAddressOrRegister(registerOrAddress) ];
 }
 
 function decodeRegisterOrValue([registerOrValue]) {
@@ -217,7 +228,7 @@ const opcodes = [
   { value: 14, length: 3, name: "not",  decodeParameters: decodeRegisterAndOneValueOrRegister },
   { value: 15, length: 3, name: "rmem", decodeParameters: ([a,b]) => [toRegister(a), toAddressOrRegister(b)] },
   { value: 16, length: 3, name: "wmem", decodeParameters: decodeTwoRegisterOrValue },
-  { value: 17, length: 2, name: "call", decodeParameters: decodeRegisterOrValue },
+  { value: 17, length: 2, name: "call", decodeParameters: decodeRegisterOrAddress },
   { value: 18, length: 1, name: "ret",  decodeParameters: hexParams },
   { value: 19, length: 2, name: "out",
     decodeParameters: ([charCode]) => {
