@@ -49,7 +49,7 @@ function next() {
   return value;
 }
 
-disassemble(memory, 0, 2000);
+disassemble(memory, 0, memory.length);
 
 function* run() {
   while (true) {
