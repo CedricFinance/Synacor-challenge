@@ -215,7 +215,7 @@ const opcodes = [
   { value: 12, length: 4, name: "and",  decodeParameters: decodeRegisterAndTwoValueOrRegister },
   { value: 13, length: 4, name: "or",   decodeParameters: decodeRegisterAndTwoValueOrRegister },
   { value: 14, length: 3, name: "not",  decodeParameters: decodeRegisterAndOneValueOrRegister },
-  { value: 15, length: 3, name: "rmem", decodeParameters: decodeTwoRegisterOrValue },
+  { value: 15, length: 3, name: "rmem", decodeParameters: ([a,b]) => [toRegister(a), toAddressOrRegister(b)] },
   { value: 16, length: 3, name: "wmem", decodeParameters: decodeTwoRegisterOrValue },
   { value: 17, length: 2, name: "call", decodeParameters: decodeRegisterOrValue },
   { value: 18, length: 1, name: "ret",  decodeParameters: hexParams },
