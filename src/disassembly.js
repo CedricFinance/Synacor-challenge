@@ -253,7 +253,13 @@ function disassembleAt(program, address) {
   try {
     result.decodedParameters = opcode.decodeParameters(rawParameters).join(" ");
   } catch(err) {
-    throw new Error(`An error occured while decoding parameters for opcode ${JSON.stringify(result)}: ${err}`);
+    console.error(new Error(`An error occured while decoding parameters for opcode ${JSON.stringify(result)}: ${err}`));
+    return {
+      address,
+      opcode: { value, name: '???', length: 1 },
+      rawParameters: [],
+      decodedParameters: `${value} '${String.fromCharCode(value)}'`
+    }
   }
 
   return result;
