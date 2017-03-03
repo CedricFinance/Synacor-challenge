@@ -1,5 +1,8 @@
 const sprintf = require('sprintf').sprintf;
 
+const HALT = 0;
+const RET = 18;
+
 const labels = {
   0x015b: "test_jmp_1",
   0x0170: "err_jmp_minus_2",
@@ -113,6 +116,9 @@ function disassemble(program, startAddress, maxAddress) {
 
     if (print) {
       printCode(result);
+      if (result.opcode.value === HALT || result.opcode.value === RET) {
+        console.log();
+      }
     }
 
     address += result.opcode.length
