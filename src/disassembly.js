@@ -232,12 +232,12 @@ const opcodes = [
 function disassembleAt(program, address) {
   const value = program[address];
 
-  if (value > opcodes.length) {
+  if (value >= opcodes.length) {
     return {
       address,
       opcode: { value, name: '???', length: 1 },
       rawParameters: [],
-      decodedParameters: []
+      decodedParameters: `${value} '${String.fromCharCode(value)}'`
     }
   }
 
