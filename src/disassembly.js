@@ -145,6 +145,17 @@ function toAddressOrLabel(address) {
   return toHexString(address);
 }
 
+function toLabeledValue(address) {
+  let suffix = '';
+  const label = labelFor(address);
+
+  if (label.length > 0) {
+    suffix = ` /* = ${label} */`;
+  }
+
+  return toHexString(address)+suffix;
+}
+
 function toRegister(v) {
   return "r"+(v-32768);
 }
@@ -158,7 +169,7 @@ function toAddressOrRegister(v) {
 
 function toValueOrRegister(v) {
   if (v < 32768) {
-    return toHexString(v);
+    return toLabeledValue(v);
   }
   return toRegister(v);
 }
