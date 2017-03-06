@@ -41,6 +41,7 @@ const labels = {
   0x034b: "rmem_data",
   0x034d: "test_rmem",
   0x0365: "test_wmem",
+  0x03ad: "err_wmem",
   0x0432: "err_no_jt_jf",
   0x0445: "err_non_zero_register",
   0x045e: "err_no_set",
@@ -69,7 +70,9 @@ function toHexString(value) {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
 }
 
-function printCode(result) {
+var mergedOut;
+
+function printCode2(result) {
   console.log(sprintf("0x%06x %04x %4s %4s %4s %-24s %s %s",
     result.address,
     result.opcode.value,
@@ -80,6 +83,46 @@ function printCode(result) {
     result.opcode.name,
     result.decodedParameters
   ));
+
+  if (result.opcode.value === HALT || result.opcode.value === RET) {
+    console.log();
+  }
+}
+
+function canMerge(result) {
+  return labelFor(result.address).length === 0 && result.opcode.value === 19;
+}
+
+function startMerge(result) {
+  return result.opcode.value === 19 && !endMerge(result);
+}
+
+function endMerge(result) {
+  return result.rawParameters[0] === 10;
+}
+
+function printCode(result) {
+  if (mergedOut) {
+    if (canMerge(result)) {
+      mergedOut = mergeOutOpcode(mergedOut, result);
+
+      if (endMerge(result)) {
+        printCode2(mergedOut);
+        mergedOut = undefined;
+      }
+
+      return;
+    }
+
+    printCode2(mergedOut);
+    mergedOut = undefined;
+  }
+
+  if (startMerge(result)) {
+    mergedOut = mergeOutOpcode(mergedOut, result);
+  } else {
+    printCode2(result);
+  }
 }
 
 function mergeOutOpcode(mergedOut, result) {
@@ -98,29 +141,9 @@ function mergeOutOpcode(mergedOut, result) {
 
 function disassemble(program, startAddress, maxAddress) {
   let address = startAddress;
-  let mergedOut;
   while(address < maxAddress) {
-    let print = true;
     let result = disassembleAt(program, address);
-
-    if (result.opcode.value === 19) {
-      mergedOut = mergeOutOpcode(mergedOut, result);
-
-      if (result.rawParameters[0] === 10) {
-        result = mergedOut;
-        mergedOut = undefined;
-      } else {
-        print = false;
-      }
-    }
-
-    if (print) {
-      printCode(result);
-      if (result.opcode.value === HALT || result.opcode.value === RET) {
-        console.log();
-      }
-    }
-
+    printCode(result);
     address += result.opcode.length
   }
 }
