@@ -37,6 +37,7 @@ const labels = {
   0x034d: "test_rmem",
   0x0365: "test_wmem",
   0x03ad: "err_wmem",
+  0x03d2: "fct_xxx",
   0x0432: "err_no_jt_jf",
   0x0445: "err_non_zero_register",
   0x045e: "err_no_set",
@@ -53,7 +54,9 @@ const labels = {
   0x0565: "err_no_hitchhiking",
   0x0586: "err_no_mult",
   0x059d: "err_no_mod",
-  0x06bb: "fct_XXX_decrypt",
+  0x06bb: "decrypt",
+  0x06c2: "_decrypt_loop",
+  0x084d: "xor(r0,r1)",
   0x17b4: "data_??"
 }
 
