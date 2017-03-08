@@ -1,13 +1,15 @@
 const sprintf = require('sprintf').sprintf;
 const { labelFor } = require('./labels');
 
-const HALT = 0;
-const RET = 18;
+const HALT =  0;
+const JMP  =  6;
+const RET  = 18;
 
 function toHexString(value) {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
 }
 
+const newlineOpcodes = [ HALT, JMP, RET];
 var mergedOut;
 
 function printCode2(result) {
@@ -22,7 +24,7 @@ function printCode2(result) {
     result.decodedParameters
   ));
 
-  if (result.opcode.value === HALT || result.opcode.value === RET) {
+  if (newlineOpcodes.includes(result.opcode.value)) {
     console.log();
   }
 }
