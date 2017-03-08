@@ -126,6 +126,7 @@ function toLabeledValue(address) {
 }
 
 function toRegister(v) {
+  validateRegister(v);
   return "r"+(v-32768);
 }
 
