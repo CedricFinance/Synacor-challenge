@@ -1,6 +1,10 @@
-var fs = require('fs')
-const { disassemble, printCodeAt } = require('./disassembly');
 const Promise = require('bluebird');
+
+const { disassemble, printCodeAt } = require('./disassembly');
+const { loadProgram } = require('./loader');
+
+var input = require('./inputs');
+var readChar = require('./readChar')(input, () => { debug_enabled = true; });
 
 debug_enabled = false
 
@@ -12,12 +16,7 @@ function exit() {
 
 var registers = new Array(8).fill(0)
 var stack = []
-var memory = []
-var data = fs.readFileSync('challenge.bin')
-for(var i=0; i < data.byteLength/2; i++) {
-  memory.push(data.readUInt16LE(2*i))
-}
-
+var memory;
 var pc = 0
 
 function decodeValue(v) {
@@ -49,12 +48,16 @@ function next() {
   return value;
 }
 
-disassemble(memory, 0, memory.length);
+function* run(program, evalCommand) {
+  memory = loadProgram(program);
 
-function* run() {
   while (true) {
     if (debug_enabled) {
       printCodeAt(memory, pc);
+    }
+
+    if (evalCommand) {
+      eval(evalCommand);
     }
 
     var oldPC = pc
@@ -193,8 +196,6 @@ function* run() {
   }
 }
 
-var input = require('./inputs');
-var readChar = require('./readChar')(input, () => { debug_enabled = true; });
 run = Promise.coroutine(run);
 
-run();
+module.exports = run;

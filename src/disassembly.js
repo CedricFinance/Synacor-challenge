@@ -1,4 +1,6 @@
 const sprintf = require('sprintf').sprintf;
+
+const { loadProgram } = require('./loader');
 const { labelFor } = require('./labels');
 
 const HALT =  0;
@@ -79,7 +81,7 @@ function mergeOutOpcode(mergedOut, result) {
   return mergedOut;
 }
 
-function disassemble(program, startAddress, maxAddress) {
+function disassemble(program, startAddress = 0, maxAddress = program.length) {
   let address = startAddress;
   while(address < maxAddress) {
     let result = disassembleAt(program, address);
@@ -261,7 +263,13 @@ function printCodeAt(program, address) {
   printCode(disassembleAt(program, address));
 }
 
+function disassembleFile(file) {
+  const program = loadProgram(file);
+  disassemble(program);
+}
+
 module.exports = {
+  disassembleFile,
   disassemble,
   printCodeAt
 }
