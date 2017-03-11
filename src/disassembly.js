@@ -223,10 +223,14 @@ const opcodes = [
   { value: 21, length: 1, name: "noop", decodeParameters: hexParams },
 ]
 
+function isData(address) {
+  return address >= 0x017b4
+}
+
 function disassembleAt(program, address) {
   const value = program[address];
 
-  if (value >= opcodes.length) {
+  if (isData(address) || value >= opcodes.length) {
     return {
       address,
       opcode: { value, name: '???', length: 1 },

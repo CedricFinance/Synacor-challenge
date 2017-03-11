@@ -57,7 +57,8 @@ const labels = {
   0x06bb: "decrypt",
   0x06c2: "_decrypt_loop",
   0x084d: "xor(r0,r1)",
-  0x17b4: "data_??"
+  0x17b4: "s_test_string",
+  0x17c0: "s_self_test_complete"
 }
 
 function labelFor(address) {
