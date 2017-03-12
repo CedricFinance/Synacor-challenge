@@ -32,15 +32,18 @@ function printCode2(result) {
 }
 
 function canMerge(result) {
-  return labelFor(result.address).length === 0 && result.opcode.value === 19;
+  return (labelFor(result.address).length === 0 && result.opcode.value === 19)
+      || (mergedOut.decodedParameters[0].length < mergedOut.opcode.value + 2);
 }
 
 function startMerge(result) {
-  return result.opcode.value === 19 && !endMerge(result);
+  return (result.opcode.value === 19 && !endMerge(result))
+      || (result.opcode.name === "???" && labelFor(result.address).startsWith("s_"));
 }
 
 function endMerge(result) {
-  return result.rawParameters[0] === 10;
+  return (result.opcode.value === 19 && result.rawParameters[0] === 10)
+      || (mergedOut && mergedOut.opcode.name === "???" && mergedOut.decodedParameters[0].length == mergedOut.opcode.value + 2);
 }
 
 function printCode(result) {
@@ -68,7 +71,10 @@ function printCode(result) {
 }
 
 function mergeOutOpcode(mergedOut, result) {
+  var startingMerge = false;
+
   if (typeof mergedOut === "undefined") {
+    startingMerge = true;
     mergedOut = {
       address: result.address,
       opcode: result.opcode,
@@ -77,7 +83,13 @@ function mergeOutOpcode(mergedOut, result) {
     };
   }
 
-  mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + result.decodedParameters.slice(1);
+  if (result.opcode.name === "???") {
+    if (!startingMerge) {
+      mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + safeStringFromCharCode(result.opcode.value).slice(1);
+    }
+  } else {
+    mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + result.decodedParameters.slice(1);
+  }
   return mergedOut;
 }
 

@@ -58,7 +58,17 @@ const labels = {
   0x06c2: "_decrypt_loop",
   0x084d: "xor(r0,r1)",
   0x17b4: "s_test_string",
-  0x17c0: "s_self_test_complete"
+  0x17c0: "s_self_test_complete",
+  0x17e4: "s_complete",
+  0x17fe: "s_foothills",
+  0x1808: "s_foothills_desc",
+  0x18c0: "s_foothills_dir_1",
+  0x18c8: "s_foothills_dir_2",
+  0x18ce: "s_foothills_south",
+  0x18d8: "s_foothills_south_desc",
+  0x1923: "s_foothills_south_dir_1",
+  0x1929: "s_dark_cave",
+  0x1933: "s_dark_cave_desc",
 }
 
 function labelFor(address) {
