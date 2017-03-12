@@ -193,6 +193,10 @@ function decodeRegisterAndOneValueOrRegister([register, valueOrRegister]) {
   return [ toRegister(register), toValueOrRegister(valueOrRegister) ];
 }
 
+function safeStringFromCharCode(charCode) {
+  return charCode === 10 ? "'\\n'" : `'${String.fromCharCode(charCode)}'`
+}
+
 const opcodes = [
   { value: 0,  length: 1, name: "halt", decodeParameters: hexParams },
   { value: 1,  length: 3, name: "set",  decodeParameters: decodeRegisterAndOneValueOrRegister },
@@ -215,7 +219,7 @@ const opcodes = [
   { value: 18, length: 1, name: "ret",  decodeParameters: hexParams },
   { value: 19, length: 2, name: "out",
     decodeParameters: ([charCode]) => {
-      const str = charCode === 10 ? "'\\n'" : `'${String.fromCharCode(charCode)}'`;
+      const str = safeStringFromCharCode(charCode);
       return [ str ];
     }
   },
@@ -227,16 +231,20 @@ function isData(address) {
   return address >= 0x017b4
 }
 
+function invalidOpcode(address, value) {
+  return {
+    address,
+    opcode: { value, name: '???', length: 1 },
+    rawParameters: [],
+    decodedParameters: `${value} ${safeStringFromCharCode(value)}`
+  };
+}
+
 function disassembleAt(program, address) {
   const value = program[address];
 
   if (isData(address) || value >= opcodes.length) {
-    return {
-      address,
-      opcode: { value, name: '???', length: 1 },
-      rawParameters: [],
-      decodedParameters: `${value} '${String.fromCharCode(value)}'`
-    }
+    return invalidOpcode(address, value);
   }
 
   const opcode = opcodes[value];
@@ -252,12 +260,7 @@ function disassembleAt(program, address) {
     result.decodedParameters = opcode.decodeParameters(rawParameters).join(" ");
   } catch(err) {
     console.error(new Error(`An error occured while decoding parameters for opcode ${JSON.stringify(result)}: ${err}`));
-    return {
-      address,
-      opcode: { value, name: '???', length: 1 },
-      rawParameters: [],
-      decodedParameters: `${value} '${String.fromCharCode(value)}'`
-    }
+    return invalidOpcode(address, value);
   }
 
   return result;
