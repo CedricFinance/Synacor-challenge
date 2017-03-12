@@ -38,7 +38,7 @@ function canMerge(result) {
 
 function startMerge(result) {
   return (result.opcode.value === 19 && !endMerge(result))
-      || (result.opcode.name === "???" && labelFor(result.address).startsWith("s_"));
+      || (result.opcode.name === "???" && (labelFor(result.address).startsWith("s_") || labelFor(result.address).startsWith("a_")));
 }
 
 function endMerge(result) {
@@ -70,6 +70,17 @@ function printCode(result) {
   }
 }
 
+function getKind(result) {
+  const label = labelFor(result.address);
+  if (label.startsWith("a_")) {
+    return "array";
+  }
+  if (label.startsWith("s_")) {
+    return "string";
+  }
+  return "out"
+}
+
 function mergeOutOpcode(mergedOut, result) {
   var startingMerge = false;
 
@@ -79,14 +90,25 @@ function mergeOutOpcode(mergedOut, result) {
       address: result.address,
       opcode: result.opcode,
       rawParameters: [],
-      decodedParameters: ["''"]
+      kind: getKind(result)
     };
+    if (mergedOut.kind === "array") {
+      mergedOut.decodedParameters = [[]];
+    } else {
+      mergedOut.decodedParameters = ["''"];
+    }
+
   }
 
-  if (result.opcode.name === "???") {
+  if (mergedOut.kind === "string") {
     if (!startingMerge) {
       mergedOut.rawParameters.push(result.opcode.value);
       mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + safeStringFromCharCode(result.opcode.value).slice(1);
+    }
+  } else if (mergedOut.kind === "array") {
+    if (!startingMerge) {
+      mergedOut.rawParameters.push(result.opcode.value);
+      mergedOut.decodedParameters[0].push(result.opcode.value);
     }
   } else {
     mergedOut.rawParameters.push(result.rawParameters[0]);
