@@ -26,7 +26,7 @@ function printCode2(result) {
     result.decodedParameters
   ));
 
-  if (newlineOpcodes.includes(result.opcode.value)) {
+  if (result.opcode.name !== "???" && newlineOpcodes.includes(result.opcode.value)) {
     console.log();
   }
 }
