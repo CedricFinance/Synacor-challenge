@@ -23,7 +23,7 @@ function printCode2(result) {
     toHexString(result.rawParameters[2]),
     labelFor(result.address),
     result.opcode.name,
-    result.decodedParameters
+    result.decodedParameters.join(" ")
   ));
 
   if (result.opcode.name !== "???" && newlineOpcodes.includes(result.opcode.value)) {
@@ -33,7 +33,7 @@ function printCode2(result) {
 
 function canMerge(result) {
   return (labelFor(result.address).length === 0 && result.opcode.value === 19)
-      || (mergedOut.decodedParameters[0].length < mergedOut.opcode.value + 2);
+      || (mergedOut.opcode.name === "???" && mergedOut.rawParameters.length < mergedOut.opcode.value);
 }
 
 function startMerge(result) {
@@ -43,7 +43,7 @@ function startMerge(result) {
 
 function endMerge(result) {
   return (result.opcode.value === 19 && result.rawParameters[0] === 10)
-      || (mergedOut && mergedOut.opcode.name === "???" && mergedOut.decodedParameters[0].length == mergedOut.opcode.value + 2);
+      || (mergedOut && mergedOut.opcode.name === "???" && mergedOut.rawParameters.length == mergedOut.opcode.value);
 }
 
 function printCode(result) {
@@ -78,17 +78,19 @@ function mergeOutOpcode(mergedOut, result) {
     mergedOut = {
       address: result.address,
       opcode: result.opcode,
-      rawParameters: result.rawParameters.slice(0),
+      rawParameters: [],
       decodedParameters: ["''"]
     };
   }
 
   if (result.opcode.name === "???") {
     if (!startingMerge) {
+      mergedOut.rawParameters.push(result.opcode.value);
       mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + safeStringFromCharCode(result.opcode.value).slice(1);
     }
   } else {
-    mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + result.decodedParameters.slice(1);
+    mergedOut.rawParameters.push(result.rawParameters[0]);
+    mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + result.decodedParameters[0].slice(1);
   }
   return mergedOut;
 }
@@ -248,7 +250,7 @@ function invalidOpcode(address, value) {
     address,
     opcode: { value, name: '???', length: 1 },
     rawParameters: [],
-    decodedParameters: `${value} ${safeStringFromCharCode(value)}`
+    decodedParameters: [`${value} ${safeStringFromCharCode(value)}`]
   };
 }
 
@@ -269,7 +271,7 @@ function disassembleAt(program, address) {
   };
 
   try {
-    result.decodedParameters = opcode.decodeParameters(rawParameters).join(" ");
+    result.decodedParameters = opcode.decodeParameters(rawParameters);
   } catch(err) {
     console.error(new Error(`An error occured while decoding parameters for opcode ${JSON.stringify(result)}: ${err}`));
     return invalidOpcode(address, value);
