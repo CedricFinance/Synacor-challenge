@@ -32,7 +32,7 @@ function printCode2(result) {
 }
 
 function canMerge(result) {
-  return (labelFor(result.address).length === 0 && result.opcode.value === 19)
+  return (result.opcode.value === 19 && labelFor(result.address).length === 0 && !isRegister(result.rawParameters[0]))
       || (mergedOut.opcode.name === "???" && mergedOut.rawParameters.length < mergedOut.opcode.value);
 }
 
@@ -42,7 +42,7 @@ function startMerge(result) {
 }
 
 function endMerge(result) {
-  return (result.opcode.value === 19 && result.rawParameters[0] === 10)
+  return (result.opcode.value === 19 && (result.rawParameters[0] === 10 || isRegister(result.rawParameters[0])))
       || (mergedOut && mergedOut.opcode.name === "???" && mergedOut.rawParameters.length == mergedOut.opcode.value);
 }
 
@@ -130,8 +130,12 @@ function hexParams(params) {
   return params.map(toHexString);
 }
 
+function isRegister(value) {
+  return value >= 32768 && value <= 32775;
+}
+
 function validateRegister(register) {
-  if (register < 32768 || register > 32775) {
+  if (!isRegister(register)) {
     throw new Error(`Invalid register ${toHexString(register)}`)
   }
 }
@@ -169,17 +173,17 @@ function toRegister(v) {
 }
 
 function toAddressOrRegister(v) {
-  if (v < 32768) {
-    return toAddressOrLabel(v);
+  if (isRegister(v)) {
+    return toRegister(v);
   }
-  return toRegister(v);
+  return toAddressOrLabel(v);
 }
 
 function toValueOrRegister(v) {
-  if (v < 32768) {
-    return toLabeledValue(v);
+  if (isRegister(v)) {
+    return toRegister(v);
   }
-  return toRegister(v);
+  return toLabeledValue(v);
 }
 
 function decodeConditionals([value, address]) {
@@ -254,9 +258,11 @@ const opcodes = [
   { value: 17, length: 2, name: "call", decodeParameters: decodeRegisterOrAddress },
   { value: 18, length: 1, name: "ret",  decodeParameters: hexParams },
   { value: 19, length: 2, name: "out",
-    decodeParameters: ([charCode]) => {
-      const str = safeStringFromCharCode(charCode);
-      return [ str ];
+    decodeParameters: ([value]) => {
+      if (isRegister(value)) {
+        return [ toRegister(value) ];
+      }
+      return [ safeStringFromCharCode(value) ];
     }
   },
   { value: 20, length: 2, name: "in",   decodeParameters: hexParams },
