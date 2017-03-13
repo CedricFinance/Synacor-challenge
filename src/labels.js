@@ -58,7 +58,7 @@ const labels = {
   0x05b2: "forEach(array:r0, fct:r1)",
   0x05ee: "printString(r0)",
   0x05f8: "print(r0)",
-  0x05fb: "decryptAndPrint(r0)",
+  0x05fb: "decryptAndPrint(value:r0, key:r2)",
   0x06bb: "decrypt",
   0x06c2: "_decrypt_loop",
   0x084d: "xor(r0,r1)",
