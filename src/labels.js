@@ -55,7 +55,7 @@ const labels = {
   0x0565: "err_no_hitchhiking",
   0x0586: "err_no_mult",
   0x059d: "err_no_mod",
-  0x05b2: "map(array:r0, fct:r1)",
+  0x05b2: "forEach(array:r0, fct:r1)",
   0x05ee: "printString(r0)",
   0x05f8: "print(r0)",
   0x05fb: "decryptAndPrint(r0)",
