@@ -15,7 +15,7 @@ const newlineOpcodes = [ HALT, JMP, RET];
 var mergedOut;
 
 function printCode2(result) {
-  console.log(sprintf("0x%06x %04x %4s %4s %4s %-24s %s %s",
+  console.log(sprintf("0x%06x %04x %4s %4s %4s %-36s %s %s",
     result.address,
     result.opcode.value,
     toHexString(result.rawParameters[0]),
