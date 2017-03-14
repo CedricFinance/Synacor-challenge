@@ -1,3 +1,5 @@
+const sprintf = require('sprintf').sprintf;
+
 const labels = new Map([
   [0x015b, "test_jmp_1"],
   [0x0170, "err_jmp_minus_2"],
@@ -134,8 +136,22 @@ function get(address) {
   return labels.get(address) || "";
 }
 
+function byAddress([firstAddress], [secondAddress]) {
+  return firstAddress - secondAddress;
+}
+
+function format(labels) {
+  console.log("const labels = new Map([");
+  for (var [address, label] of Array.from(labels.entries()).sort(byAddress)) {
+    console.log(`  [${sprintf("0x%04x",address)}, "${label}"],`);
+  }
+  console.log("]);");
+}
+
 module.exports = {
   labelFor: get,
   has,
   get,
+  all: new Map(labels),
+  format
 }

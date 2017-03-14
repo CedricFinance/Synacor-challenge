@@ -16,10 +16,27 @@ prog
 prog
   .command('disassemble', 'Disassemble a program')
   .argument('<program>', 'Program to disassemble')
+  .option('--action', 'Action to execute on disassembled code. Default: printCode', ['printCode', 'findAddresses'])
   .action((args, options) => {
-    const { disassembleFile } = require('../src/disassembly');
+    const { disassembleFile, printCode } = require('../src/disassembly');
+    let action;
 
-    disassembleFile(args.program);
+    if (options.action === "findAddresses") {
+      const labels = require('../src/labels');
+      const { GatherAddress } = require('../src/disassembly/gatherAddresses');
+
+      action = new GatherAddress(labels.all);
+    } else {
+      const { CodePrinter } = require('../src/disassembly/print');
+
+      action = new CodePrinter();
+    }
+
+    const labels = require('../src/labels');
+
+    action.start();
+    disassembleFile(args.program, { callback: action.callback.bind(action) });
+    action.end();
   });
 
 prog.parse(process.argv);
