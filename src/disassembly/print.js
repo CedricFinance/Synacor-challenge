@@ -87,6 +87,17 @@ function getKind(result) {
   return "out"
 }
 
+function toLabeledValue(address) {
+  let suffix = '';
+  const label = labels.get(address);
+
+  if (label.length > 0) {
+    suffix = ` /* = ${label} */`;
+  }
+
+  return `${address}${suffix}`;
+}
+
 function mergeOutOpcode(mergedOut, result) {
   var startingMerge = false;
 
@@ -114,7 +125,7 @@ function mergeOutOpcode(mergedOut, result) {
   } else if (mergedOut.kind === "array") {
     if (!startingMerge) {
       mergedOut.rawParameters.push(result.opcode.value);
-      mergedOut.decodedParameters[0].push(result.opcode.value);
+      mergedOut.decodedParameters[0].push(toLabeledValue(result.opcode.value));
     }
   } else {
     mergedOut.rawParameters.push(result.rawParameters[0]);

@@ -169,7 +169,7 @@ function invalidOpcode(address, value) {
     address,
     opcode: { value, name: '???', length: 1 },
     rawParameters: [],
-    decodedParameters: [`${value} ${safeStringFromCharCode(value)}`]
+    decodedParameters: [`${value} ${safeStringFromCharCode(value)} ${labels.get(value)}`]
   };
 }
 
