@@ -1,7 +1,7 @@
 const sprintf = require('sprintf').sprintf;
 
 const { loadProgram } = require('./loader');
-const { labelFor } = require('./labels');
+const labels = require('./labels');
 const { printCode } = require('./disassembly/print.js')
 
 function toHexString(value) {
@@ -38,7 +38,7 @@ function validateValue(value) {
 }
 
 function toAddressOrLabel(address) {
-  const label = labelFor(address);
+  const label = labels.get(address);
 
   if (label.length > 0) {
     return label;
@@ -49,7 +49,7 @@ function toAddressOrLabel(address) {
 
 function toLabeledValue(address) {
   let suffix = '';
-  const label = labelFor(address);
+  const label = labels.get(address);
 
   if (label.length > 0) {
     suffix = ` /* = ${label} */`;

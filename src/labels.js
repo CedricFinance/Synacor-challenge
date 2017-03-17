@@ -267,7 +267,6 @@ function format(labels) {
 }
 
 module.exports = {
-  labelFor: get,
   has,
   get,
   all: new Map(labels),
