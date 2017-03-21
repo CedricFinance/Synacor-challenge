@@ -161,7 +161,7 @@ const opcodes = [
 ]
 
 function isData(address) {
-  return address >= 0x017b4
+  return (address >= 0x090d && address <= 0x0aad) || address >= 0x017b4
 }
 
 function invalidOpcode(address, value) {

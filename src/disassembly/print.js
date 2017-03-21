@@ -20,7 +20,15 @@ function isRegister(value) {
   return value >= 32768 && value <= 32775;
 }
 
+function newLineBefore(result) {
+   return labels.get(result.address).startsWith("d_");
+}
+
 function printCode2(result) {
+  if (newLineBefore(result)) {
+    console.log();
+  }
+
   console.log(sprintf("0x%06x %04x %4s %4s %4s %-36s %s %s",
     result.address,
     result.opcode.value,
