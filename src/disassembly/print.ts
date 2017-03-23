@@ -2,13 +2,14 @@ import { sprintf } from 'sprintf';
 import * as chalk from 'chalk';
 
 import * as labels from '../labels';
+import { DisassemblyResult, MergedDisassemblyResult, ResultType, MergedResultKind } from './opcode';
 
 const HALT =  0;
 const RET  = 18;
 
 const newlineOpcodes = [ HALT, RET];
 
-var mergedOut;
+var mergedOut: MergedDisassemblyResult;
 var emptyLine = false;
 
 function safeStringFromCharCode(charCode: number) {
@@ -23,19 +24,19 @@ function isRegister(value: number) {
   return value >= 32768 && value <= 32775;
 }
 
-function newLineBefore(result) {
+function newLineBefore(result: DisassemblyResult) {
   const label = labels.get(result.address);
   return label.length > 0 && !label.startsWith("_");
 }
 
-function printCode2(result) {
+function printCode2(result: DisassemblyResult) {
   if (!emptyLine && newLineBefore(result)) {
     console.log();
   }
 
   emptyLine = false;
 
-  const chalkColor = result.type === "code" ? chalk.cyan : chalk.green;
+  const chalkColor = result.type === ResultType.Code ? chalk.cyan : chalk.green;
 
   console.log(chalkColor(sprintf("0x%06x %04x %4s %4s %4s %-36s %s %s",
     result.address,
@@ -54,22 +55,25 @@ function printCode2(result) {
   }
 }
 
-function canMerge(result) {
+function canMerge(result: DisassemblyResult) {
   return (result.opcode.value === 19 && labels.get(result.address).length === 0 && !isRegister(result.rawParameters[0]))
       || (mergedOut.opcode.name === "???" && mergedOut.rawParameters.length < mergedOut.opcode.value);
 }
 
-function startMerge(result) {
+function startMerge(result: DisassemblyResult) {
   return (result.opcode.value === 19 && !endMerge(result))
       || (result.opcode.name === "???" && (labels.get(result.address).startsWith("s_") || labels.get(result.address).startsWith("a_")));
 }
 
-function endMerge(result) {
+function endMerge(result: DisassemblyResult) {
   return (result.opcode.value === 19 && (result.rawParameters[0] === 10 || isRegister(result.rawParameters[0])))
       || (mergedOut && mergedOut.opcode.name === "???" && mergedOut.rawParameters.length == mergedOut.opcode.value);
 }
 
-function printCode(result) {
+/** Print the disassembly result
+  * Consecutive out opcode are merged (the same for arrays and strings).
+  */
+export function printCode(result: DisassemblyResult) {
   if (mergedOut) {
     if (canMerge(result)) {
       mergedOut = mergeOutOpcode(mergedOut, result);
@@ -93,18 +97,18 @@ function printCode(result) {
   }
 }
 
-function getKind(result) {
+function getKind(result: DisassemblyResult) {
   const label = labels.get(result.address);
   if (label.startsWith("a_")) {
-    return "array";
+    return MergedResultKind.Array;
   }
   if (label.startsWith("s_")) {
-    return "string";
+    return MergedResultKind.String;
   }
-  return "out"
+  return MergedResultKind.Out;
 }
 
-function toLabeledValue(address) {
+function toLabeledValue(address: number) {
   let suffix = '';
   const label = labels.get(address);
 
@@ -115,7 +119,7 @@ function toLabeledValue(address) {
   return `${address}${suffix}`;
 }
 
-function mergeOutOpcode(mergedOut, result) {
+function mergeOutOpcode(mergedOut: MergedDisassemblyResult, result: DisassemblyResult) {
   var startingMerge = false;
 
   if (typeof mergedOut === "undefined") {
@@ -124,10 +128,11 @@ function mergeOutOpcode(mergedOut, result) {
       address: result.address,
       opcode: result.opcode,
       rawParameters: [],
+      decodedParameters: [],
       kind: getKind(result),
       type: result.type
     };
-    if (mergedOut.kind === "array") {
+    if (mergedOut.kind === MergedResultKind.Array) {
       mergedOut.decodedParameters = [[]];
     } else {
       mergedOut.decodedParameters = ["''"];
@@ -135,12 +140,12 @@ function mergeOutOpcode(mergedOut, result) {
 
   }
 
-  if (mergedOut.kind === "string") {
+  if (mergedOut.kind === MergedResultKind.String) {
     if (!startingMerge) {
       mergedOut.rawParameters.push(result.opcode.value);
       mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + safeStringFromCharCode(result.opcode.value).slice(1);
     }
-  } else if (mergedOut.kind === "array") {
+  } else if (mergedOut.kind === MergedResultKind.Array) {
     if (!startingMerge) {
       mergedOut.rawParameters.push(result.opcode.value);
       mergedOut.decodedParameters[0].push(toLabeledValue(result.opcode.value));
@@ -152,11 +157,11 @@ function mergeOutOpcode(mergedOut, result) {
   return mergedOut;
 }
 
-class CodePrinter {
+export class CodePrinter {
 
   start() {}
 
-  callback(result) {
+  callback(result: DisassemblyResult) {
     printCode(result);
   }
 
@@ -166,8 +171,3 @@ class CodePrinter {
     }
   }
 }
-
-module.exports = {
-  CodePrinter,
-  printCode
-};

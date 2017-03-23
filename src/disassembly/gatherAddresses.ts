@@ -1,16 +1,7 @@
 import { sprintf } from 'sprintf';
 
 import { format } from '../labels';
-
-interface Opcode {
-  name: string
-  value: number
-}
-
-interface DisassemblyResult {
-  opcode: Opcode
-  rawParameters: number[]
-}
+import { DisassemblyResult } from './opcode';
 
 export class GatherAddress {
 
