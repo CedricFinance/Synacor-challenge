@@ -1,5 +1,16 @@
 const sprintf = require('sprintf').sprintf;
 
+const POINTER_PREFIX = "p_";
+const STRING_ARRAY_PREFIX = "a_s_";
+
+function isPointer(label) {
+  return label.startsWith(POINTER_PREFIX);
+}
+
+function isStringArray(label) {
+  return label.startsWith(STRING_ARRAY_PREFIX);
+}
+
 const labels = new Map([
   [0x015b, "test_jmp_1"],
   [0x0166, "test_jmp_2"],
@@ -476,5 +487,7 @@ module.exports = {
   has,
   get,
   all: new Map(labels),
-  format
+  format,
+  isStringArray,
+  isPointer
 }
