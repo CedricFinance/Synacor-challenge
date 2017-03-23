@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsc",
-    "run": "node src/main.js"
+    "start": "node dist/bin/synacor.js run challenge.bin"
   },
   "keywords": [],
   "author": "",
