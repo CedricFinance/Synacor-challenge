@@ -4,6 +4,8 @@ const { loadProgram } = require('./loader');
 const labels = require('./labels');
 const { printCode } = require('./disassembly/print.js')
 
+const POINTER_PREFIX = "p_";
+
 function toHexString(value) {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
 }
@@ -164,12 +166,24 @@ function isData(address) {
   return (address >= 0x090d && address <= 0x0aad) || address >= 0x017b4
 }
 
+function isPointer(label) {
+  return label.startsWith(POINTER_PREFIX);
+}
+
 function invalidOpcode(address, value) {
+  const label = labels.get(address);
+  var decodedParameters;
+  if (isPointer(label)) {
+    decodedParameters = [ toAddressOrLabel(value) ];
+  } else {
+    decodedParameters = [ `${value} ${safeStringFromCharCode(value)} ${labels.get(value)}` ];
+  }
+
   return {
     address,
     opcode: { value, name: '???', length: 1 },
     rawParameters: [],
-    decodedParameters: [`${value} ${safeStringFromCharCode(value)} ${labels.get(value)}`]
+    decodedParameters
   };
 }
 
