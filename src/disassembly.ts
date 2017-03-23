@@ -1,43 +1,35 @@
-const sprintf = require('sprintf').sprintf;
+import { sprintf } from 'sprintf';
 
-const { loadProgram } = require('./loader');
-const labels = require('./labels');
-const { printCode } = require('./disassembly/print.js')
+import { loadProgram } from './loader';
+import * as labels from './labels';
+import { printCode } from './disassembly/print.js';
+import { ResultType, DisassemblyResult, OpcodeDefinition } from './disassembly/opcode';
 
-function toHexString(value) {
+function toHexString(value: number): string {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
 }
 
-function disassemble(program, { startAddress = 0, maxAddress = program.length, callback = printCode } = {}) {
-  let address = startAddress;
-  while(address < maxAddress) {
-    let result = disassembleAt(program, address);
-    callback(result);
-    address += result.opcode.length
-  }
-}
-
-function hexParams(params) {
+function hexParams(params: number[]) {
   return params.map(toHexString);
 }
 
-function isRegister(value) {
+function isRegister(value: number) {
   return value >= 32768 && value <= 32775;
 }
 
-function validateRegister(register) {
+function validateRegister(register: number) {
   if (!isRegister(register)) {
     throw new Error(`Invalid register ${toHexString(register)}`)
   }
 }
 
-function validateValue(value) {
+function validateValue(value: number) {
   if (value >= 32768) {
     throw new Error(`Invalid value ${toHexString(value)}`)
   }
 }
 
-function toAddressOrLabel(address) {
+function toAddressOrLabel(address: number) {
   const label = labels.get(address);
 
   if (label.length > 0) {
@@ -47,7 +39,7 @@ function toAddressOrLabel(address) {
   return toHexString(address);
 }
 
-function toLabeledValue(address) {
+function toLabeledValue(address: number) {
   let suffix = '';
   const label = labels.get(address);
 
@@ -58,77 +50,77 @@ function toLabeledValue(address) {
   return toHexString(address)+suffix;
 }
 
-function toRegister(v) {
+function toRegister(v: number) {
   validateRegister(v);
   return "r"+(v-32768);
 }
 
-function toAddressOrRegister(v) {
+function toAddressOrRegister(v: number) {
   if (isRegister(v)) {
     return toRegister(v);
   }
   return toAddressOrLabel(v);
 }
 
-function toValueOrRegister(v) {
+function toValueOrRegister(v: number) {
   if (isRegister(v)) {
     return toRegister(v);
   }
   return toLabeledValue(v);
 }
 
-function decodeConditionals([value, address]) {
+function decodeConditionals([value, address]: number[]) {
   return [ toValueOrRegister(value), toAddressOrLabel(address) ];
 }
 
-function decodeOneAddress([address]) {
+function decodeOneAddress([address]: number[]) {
   return [ toAddressOrLabel(address) ];
 }
 
-function decodeOneRegister([register]) {
+function decodeOneRegister([register]: number[]) {
   validateRegister(register);
   return [ toRegister(register) ];
 }
 
-function decodeRegisterAndValue([register, value]) {
+function decodeRegisterAndValue([register, value]: number[]) {
   validateRegister(register);
   validateValue(value);
   return [ toRegister(register), toHexString(value) ];
 }
 
-function decodeRegisterOrAddress([registerOrAddress]) {
+function decodeRegisterOrAddress([registerOrAddress]: number[]) {
   return [ toAddressOrRegister(registerOrAddress) ];
 }
 
-function decodeRegisterOrValue([registerOrValue]) {
+function decodeRegisterOrValue([registerOrValue]: number[]) {
   return [ toValueOrRegister(registerOrValue) ];
 }
 
-function decodeTwoRegisterOrValue([registerOrValue1, registerOrValue2]) {
+function decodeTwoRegisterOrValue([registerOrValue1, registerOrValue2]: number[]) {
   return [ toValueOrRegister(registerOrValue1), toValueOrRegister(registerOrValue2) ];
 }
 
-function decodeRegisterAndTwoValues([register, first, second]) {
+function decodeRegisterAndTwoValues([register, first, second]: number[]) {
   validateRegister(register);
   validateValue(first);
   validateValue(second);
   return [ toRegister(register), toHexString(first), toHexString(second) ];
 }
 
-function decodeRegisterAndTwoValueOrRegister([register, first, second]) {
+function decodeRegisterAndTwoValueOrRegister([register, first, second]: number[]) {
   return [ toRegister(register), toValueOrRegister(first), toValueOrRegister(second) ];
 }
 
-function decodeRegisterAndOneValueOrRegister([register, valueOrRegister]) {
+function decodeRegisterAndOneValueOrRegister([register, valueOrRegister]: number[]) {
   validateRegister(register);
   return [ toRegister(register), toValueOrRegister(valueOrRegister) ];
 }
 
-function safeStringFromCharCode(charCode) {
+function safeStringFromCharCode(charCode: number) {
   return charCode === 10 ? "'\\n'" : `'${String.fromCharCode(charCode)}'`
 }
 
-const opcodes = [
+const opcodes: OpcodeDefinition[] = [
   { value: 0,  length: 1, name: "halt", decodeParameters: hexParams },
   { value: 1,  length: 3, name: "set",  decodeParameters: decodeRegisterAndOneValueOrRegister },
   { value: 2,  length: 2, name: "push", decodeParameters: decodeRegisterOrValue },
@@ -160,11 +152,11 @@ const opcodes = [
   { value: 21, length: 1, name: "noop", decodeParameters: hexParams },
 ]
 
-function isData(address) {
+function isData(address: number) {
   return (address >= 0x090d && address <= 0x0aad) || address >= 0x017b4
 }
 
-function invalidOpcode(address, value) {
+function invalidOpcode(address: number, value: number): DisassemblyResult {
   const label = labels.get(address);
   var decodedParameters;
   if (labels.isPointer(label)) {
@@ -178,17 +170,17 @@ function invalidOpcode(address, value) {
     opcode: { value, name: '???', length: 1 },
     rawParameters: [],
     decodedParameters,
-    type: "code"
+    type: ResultType.Code
   };
 }
 
-function data(address, value) {
+function data(address: number, value: number) {
   const result = invalidOpcode(address, value);
-  result.type = "data";
+  result.type = ResultType.Data;
   return result;
 }
 
-function disassembleAt(program, address) {
+function disassembleAt(program: number[], address: number) {
   const value = program[address];
 
   if (isData(address) || value >= opcodes.length) {
@@ -198,11 +190,12 @@ function disassembleAt(program, address) {
   const opcode = opcodes[value];
   const rawParameters = program.slice(address+1, address+1+opcode.length-1);
 
-  const result = {
+  const result: DisassemblyResult = {
     address,
     opcode,
     rawParameters,
-    type: "code"
+    decodedParameters: [],
+    type: ResultType.Code
   };
 
   try {
@@ -215,17 +208,20 @@ function disassembleAt(program, address) {
   return result;
 }
 
-function printCodeAt(program, address) {
+export function printCodeAt(program: number[], address: number) {
   printCode(disassembleAt(program, address));
 }
 
-function disassembleFile(file, options) {
-  const program = loadProgram(file);
-  disassemble(program, options);
+export function disassemble(program: number[], { startAddress = 0, maxAddress = program.length, callback = printCode } = {}) {
+  let address = startAddress;
+  while(address < maxAddress) {
+    let result = disassembleAt(program, address);
+    callback(result);
+    address += result.opcode.length
+  }
 }
 
-module.exports = {
-  disassembleFile,
-  disassemble,
-  printCodeAt
+export function disassembleFile(file: string, options) {
+  const program = loadProgram(file);
+  disassemble(program, options);
 }

@@ -1,6 +1,8 @@
 interface Opcode {
   name: string
-  value: number
+  value: number,
+  /** The length in words */
+  length: number
 }
 
 export enum ResultType {
@@ -21,4 +23,11 @@ export enum MergedResultKind {
 
 export interface MergedDisassemblyResult extends DisassemblyResult {
   kind: MergedResultKind
+}
+
+export interface OpcodeDefinition {
+  value: number,
+  name: string,
+  length: number,
+  decodeParameters: { (parameters: number[]): string[] }
 }
