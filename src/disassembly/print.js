@@ -4,11 +4,12 @@ const chalk = require('chalk');
 const labels = require('../labels');
 
 const HALT =  0;
-const JMP  =  6;
 const RET  = 18;
 
-const newlineOpcodes = [ HALT, JMP, RET];
+const newlineOpcodes = [ HALT, RET];
+
 var mergedOut;
+var emptyLine = false;
 
 function safeStringFromCharCode(charCode) {
   return charCode === 10 ? "'\\n'" : `'${String.fromCharCode(charCode)}'`
@@ -23,13 +24,16 @@ function isRegister(value) {
 }
 
 function newLineBefore(result) {
-   return labels.get(result.address).startsWith("d_");
+  const label = labels.get(result.address);
+  return label.length > 0 && !label.startsWith("_");
 }
 
 function printCode2(result) {
-  if (newLineBefore(result)) {
+  if (!emptyLine && newLineBefore(result)) {
     console.log();
   }
+
+  emptyLine = false;
 
   const chalkColor = result.type === "code" ? chalk.cyan : chalk.green;
 
@@ -46,6 +50,7 @@ function printCode2(result) {
 
   if (result.opcode.name !== "???" && newlineOpcodes.includes(result.opcode.value)) {
     console.log();
+    emptyLine = true;
   }
 }
 
