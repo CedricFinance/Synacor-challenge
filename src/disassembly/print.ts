@@ -1,7 +1,7 @@
-const sprintf = require('sprintf').sprintf;
-const chalk = require('chalk');
+import { sprintf } from 'sprintf';
+import * as chalk from 'chalk';
 
-const labels = require('../labels');
+import * as labels from '../labels';
 
 const HALT =  0;
 const RET  = 18;
@@ -11,15 +11,15 @@ const newlineOpcodes = [ HALT, RET];
 var mergedOut;
 var emptyLine = false;
 
-function safeStringFromCharCode(charCode) {
+function safeStringFromCharCode(charCode: number) {
   return charCode === 10 ? "'\\n'" : `'${String.fromCharCode(charCode)}'`
 }
 
-function toHexString(value) {
+function toHexString(value: number) {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
 }
 
-function isRegister(value) {
+function isRegister(value: number) {
   return value >= 32768 && value <= 32775;
 }
 
