@@ -1,18 +1,32 @@
-const { format } = require('../labels');
+import { sprintf } from 'sprintf';
 
-class GatherAddress {
+import { format } from '../labels';
 
-  constructor(existingLabels) {
+interface Opcode {
+  name: string
+  value: number
+}
+
+interface DisassemblyResult {
+  opcode: Opcode
+  rawParameters: number[]
+}
+
+export class GatherAddress {
+
+  result: Map<number, string>
+
+  constructor(existingLabels: Map<number, string>) {
     this.result = new Map(existingLabels);
   }
 
   start() {}
 
-  callback(result) {
+  callback(result: DisassemblyResult) {
     if (result.opcode.name === "???") { return; }
 
     const opcodeValue = result.opcode.value;
-    let address;
+    let address: number;
 
     if (opcodeValue === 6 || opcodeValue === 17) {
       address = result.rawParameters[0];
@@ -32,7 +46,3 @@ class GatherAddress {
     format(this.result);
   }
 }
-
-module.exports = {
-  GatherAddress
-};
