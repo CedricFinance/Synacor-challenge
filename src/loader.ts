@@ -1,16 +1,12 @@
-const fs = require('fs');
+import * as fs from 'fs';
 
-function loadProgram(file) {
+export function loadProgram(file: string) {
   const data = fs.readFileSync(file);
-  const program = [];
+  const program: number[] = [];
 
   for(var i=0; i < data.byteLength/2; i++) {
     program.push(data.readUInt16LE(2*i))
   }
 
   return program;
-}
-
-module.exports = {
-  loadProgram
 }

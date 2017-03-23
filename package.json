@@ -19,6 +19,7 @@
     "sprintf": "^0.1.5"
   },
   "devDependencies": {
+    "@types/node": "^7.0.10",
     "typescript": "^2.2.1"
   },
   "description": ""
