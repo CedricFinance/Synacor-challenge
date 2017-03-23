@@ -1,4 +1,6 @@
 const sprintf = require('sprintf').sprintf;
+const chalk = require('chalk');
+
 const labels = require('../labels');
 
 const HALT =  0;
@@ -29,7 +31,9 @@ function printCode2(result) {
     console.log();
   }
 
-  console.log(sprintf("0x%06x %04x %4s %4s %4s %-36s %s %s",
+  const chalkColor = result.type === "code" ? chalk.cyan : chalk.green;
+
+  console.log(chalkColor(sprintf("0x%06x %04x %4s %4s %4s %-36s %s %s",
     result.address,
     result.opcode.value,
     toHexString(result.rawParameters[0]),
@@ -38,7 +42,7 @@ function printCode2(result) {
     labels.get(result.address),
     result.opcode.name,
     result.decodedParameters.join(" ")
-  ));
+  )));
 
   if (result.opcode.name !== "???" && newlineOpcodes.includes(result.opcode.value)) {
     console.log();
@@ -115,7 +119,8 @@ function mergeOutOpcode(mergedOut, result) {
       address: result.address,
       opcode: result.opcode,
       rawParameters: [],
-      kind: getKind(result)
+      kind: getKind(result),
+      type: result.type
     };
     if (mergedOut.kind === "array") {
       mergedOut.decodedParameters = [[]];

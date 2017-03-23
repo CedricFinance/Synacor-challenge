@@ -177,15 +177,22 @@ function invalidOpcode(address, value) {
     address,
     opcode: { value, name: '???', length: 1 },
     rawParameters: [],
-    decodedParameters
+    decodedParameters,
+    type: "code"
   };
+}
+
+function data(address, value) {
+  const result = invalidOpcode(address, value);
+  result.type = "data";
+  return result;
 }
 
 function disassembleAt(program, address) {
   const value = program[address];
 
   if (isData(address) || value >= opcodes.length) {
-    return invalidOpcode(address, value);
+    return data(address, value);
   }
 
   const opcode = opcodes[value];
@@ -195,6 +202,7 @@ function disassembleAt(program, address) {
     address,
     opcode,
     rawParameters,
+    type: "code"
   };
 
   try {
