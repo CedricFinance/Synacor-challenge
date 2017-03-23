@@ -1,13 +1,13 @@
-const sprintf = require('sprintf').sprintf;
+import { sprintf } from "sprintf";
 
 const POINTER_PREFIX = "p_";
 const STRING_ARRAY_PREFIX = "a_s_";
 
-function isPointer(label) {
+export function isPointer(label: string) {
   return label.startsWith(POINTER_PREFIX);
 }
 
-function isStringArray(label) {
+export function isStringArray(label: string) {
   return label.startsWith(STRING_ARRAY_PREFIX);
 }
 
@@ -468,11 +468,11 @@ const labels = new Map([
   [0x74fa, "a_???"],
 ]);
 
-function has(address) {
+export function has(address: number) {
   return labels.has(address);
 }
 
-function get(address) {
+export function get(address: number) {
   return labels.get(address) || "";
 }
 
@@ -480,7 +480,7 @@ function byAddress([firstAddress], [secondAddress]) {
   return firstAddress - secondAddress;
 }
 
-function format(labels) {
+export function format(labels: Map<number, string>) {
   console.log("const labels = new Map([");
   for (var [address, label] of Array.from(labels.entries()).sort(byAddress)) {
     console.log(`  [${sprintf("0x%04x",address)}, "${label}"],`);
@@ -488,11 +488,4 @@ function format(labels) {
   console.log("]);");
 }
 
-module.exports = {
-  has,
-  get,
-  all: new Map(labels),
-  format,
-  isStringArray,
-  isPointer
-}
+export const all = new Map(labels);
