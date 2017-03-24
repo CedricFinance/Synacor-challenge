@@ -27,10 +27,3 @@ export enum MergedResultKind {
 export interface MergedDisassemblyResult extends DisassemblyResult {
   kind: MergedResultKind
 }
-
-export interface OpcodeDefinition {
-  value: number,
-  name: string,
-  length: number,
-  decodeParameters: { (parameters: number[]): string[] }
-}
