@@ -17,7 +17,7 @@ var debug_enabled = false
 function exit() {
   console.log(`Registers: ${registers}`);
 
-  process.exit(1)
+  process.exit(0)
 }
 
 var registers: number[] = new Array(8).fill(0)
