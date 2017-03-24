@@ -1,7 +1,6 @@
-var Promise = require('bluebird')
-var readline = require('readline')
+import * as readline from 'readline';
 
-function init(inputs = [], sigintHandler = () => { return; }) {
+function init(inputs: number[] = [], sigintHandler = () => { return; }) {
   var sigintCounts = 0;
 
   var rl = readline.createInterface({ input: process.stdin, output: process.stdout })
@@ -14,7 +13,7 @@ function init(inputs = [], sigintHandler = () => { return; }) {
     sigintHandler();
   })
 
-  function question(message) {
+  function question(message: string): Promise<string> {
     return new Promise((resolve, reject) => {
       rl.question(message, answer => resolve(answer));
     })
@@ -33,4 +32,5 @@ function init(inputs = [], sigintHandler = () => { return; }) {
 
   return readChar;
 }
+
 module.exports = init;
