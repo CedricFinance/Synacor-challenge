@@ -1,9 +1,9 @@
 import { sprintf } from 'sprintf';
 
-import { loadProgram } from './loader';
-import * as labels from './labels';
-import { printCode } from './disassembly/print.js';
-import { ResultType, DisassemblyResult, OpcodeDefinition } from './disassembly/opcode';
+import { loadProgram } from '../loader';
+import * as labels from '../labels';
+import { printCode } from './print.js';
+import { ResultType, DisassemblyResult, OpcodeDefinition } from './opcode';
 
 function toHexString(value: number): string {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
