@@ -1,6 +1,6 @@
 import * as readline from 'readline';
 
-function init(inputs: number[] = [], sigintHandler = () => { return; }) {
+export function init(inputs: number[] = [], sigintHandler = () => { return; }) {
   var sigintCounts = 0;
 
   var rl = readline.createInterface({ input: process.stdin, output: process.stdout })
@@ -32,5 +32,3 @@ function init(inputs: number[] = [], sigintHandler = () => { return; }) {
 
   return readChar;
 }
-
-module.exports = init;

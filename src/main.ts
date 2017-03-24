@@ -1,12 +1,14 @@
-const Promise = require('bluebird');
+import * as Promise from 'bluebird';
 
-const { disassemble, printCodeAt } = require('./disassembly');
-const { loadProgram } = require('./loader');
+import { disassemble, printCodeAt } from './disassembly';
+import { loadProgram } from './loader';
 
-var input = require('./inputs');
-var readChar = require('./readChar')(input, () => { debug_enabled = true; });
+import inputs from './inputs';
+import * as read from './readChar';
 
-debug_enabled = false
+const readChar = read.init(inputs, () => { debug_enabled = true; });
+
+var debug_enabled = false
 
 function exit() {
   console.log(`Registers: ${registers}`);
@@ -14,30 +16,30 @@ function exit() {
   process.exit(1)
 }
 
-var registers = new Array(8).fill(0)
-var stack = []
-var memory;
+var registers: number[] = new Array(8).fill(0)
+var stack: number[] = []
+var memory: number[];
 var pc = 0
 
-function decodeValue(v) {
+function decodeValue(v: number) {
   if (v < 32768) {
     return v
   }
   return readRegister(v)
 }
 
-function validateRegister(register) {
+function validateRegister(register: number) {
   if (register < 32768 || register > 32775) {
     throw new Error(`Invalid register ${register}`)
   }
 }
 
-function writeRegister(register, value) {
+function writeRegister(register: number, value: number) {
   validateRegister(register)
   registers[register - 32768] = value
 }
 
-function readRegister(register) {
+function readRegister(register: number) {
   validateRegister(register)
   return registers[register - 32768]
 }
@@ -48,7 +50,7 @@ function next() {
   return value;
 }
 
-function* run(program, evalCommand) {
+function* run(program: string, evalCommand: string) {
   memory = loadProgram(program);
 
   while (true) {
@@ -196,6 +198,6 @@ function* run(program, evalCommand) {
   }
 }
 
-run = Promise.coroutine(run);
+ const runCoroutine = Promise.coroutine(run);
 
-module.exports = run;
+module.exports = runCoroutine;

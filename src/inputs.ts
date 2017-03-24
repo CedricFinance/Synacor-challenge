@@ -57,4 +57,4 @@ const instructions = [
   ""
 ].join("\n").split("").map(c => c.charCodeAt(0));
 
-module.exports = instructions;
+export default instructions;
