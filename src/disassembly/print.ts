@@ -29,7 +29,7 @@ function newLineBefore(result: DisassemblyResult) {
   return label.length > 0 && !label.startsWith("_");
 }
 
-function printCode2(result: DisassemblyResult) {
+function printLine(result: DisassemblyResult) {
   if (!emptyLine && newLineBefore(result)) {
     console.log();
   }
@@ -44,7 +44,7 @@ function printCode2(result: DisassemblyResult) {
     toHexString(result.rawParameters[0]),
     toHexString(result.rawParameters[1]),
     toHexString(result.rawParameters[2]),
-    labels.get(result.address),
+    result.label,
     result.opcode.name,
     result.decodedParameters.join(" ")
   )));
@@ -79,21 +79,21 @@ export function printCode(result: DisassemblyResult) {
       mergedOut = mergeOutOpcode(mergedOut, result);
 
       if (endMerge(result)) {
-        printCode2(mergedOut);
+        printLine(mergedOut);
         mergedOut = undefined;
       }
 
       return;
     }
 
-    printCode2(mergedOut);
+    printLine(mergedOut);
     mergedOut = undefined;
   }
 
   if (startMerge(result)) {
     mergedOut = mergeOutOpcode(mergedOut, result);
   } else {
-    printCode2(result);
+    printLine(result);
   }
 }
 
@@ -125,12 +125,13 @@ function mergeOutOpcode(mergedOut: MergedDisassemblyResult, result: DisassemblyR
   if (typeof mergedOut === "undefined") {
     startingMerge = true;
     mergedOut = {
+      type: result.type,
       address: result.address,
+      label: result.label,
       opcode: result.opcode,
       rawParameters: [],
       decodedParameters: [],
-      kind: getKind(result),
-      type: result.type
+      kind: getKind(result)
     };
     if (mergedOut.kind === MergedResultKind.Array) {
       mergedOut.decodedParameters = [[]];
@@ -167,7 +168,7 @@ export class CodePrinter {
 
   end() {
     if (mergedOut) {
-      printCode2(mergedOut);
+      printLine(mergedOut);
     }
   }
 }

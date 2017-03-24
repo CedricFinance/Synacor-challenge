@@ -166,11 +166,12 @@ function invalidOpcode(address: number, value: number): DisassemblyResult {
   }
 
   return {
+    type: ResultType.Code,
     address,
+    label,
     opcode: { value, name: '???', length: 1 },
     rawParameters: [],
-    decodedParameters,
-    type: ResultType.Code
+    decodedParameters
   };
 }
 
@@ -191,11 +192,12 @@ function disassembleAt(program: number[], address: number) {
   const rawParameters = program.slice(address+1, address+1+opcode.length-1);
 
   const result: DisassemblyResult = {
+    type: ResultType.Code,
+    label: labels.get(address),
     address,
     opcode,
     rawParameters,
-    decodedParameters: [],
-    type: ResultType.Code
+    decodedParameters: []
   };
 
   try {

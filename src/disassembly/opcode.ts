@@ -10,11 +10,14 @@ export enum ResultType {
 }
 
 export interface DisassemblyResult {
-  opcode: Opcode,
+  type: ResultType,
   address: number,
+
+  /** The label for this item, empty string if none. */
+  label: string,
   rawParameters: number[],
-  decodedParameters: any[],
-  type: ResultType
+  opcode: Opcode,
+  decodedParameters: any[]
 }
 
 export enum MergedResultKind {
