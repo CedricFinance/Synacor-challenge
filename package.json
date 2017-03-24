@@ -5,7 +5,9 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsc",
-    "start": "node dist/bin/synacor.js run challenge.bin"
+    "start": "node dist/bin/synacor.js run challenge.bin",
+    "disass": "node dist/bin/synacor.js disassemble challenge.bin",
+    "startDisass": "node dist/bin/synacor.js run challenge.bin --eval 'if (pc === 0x3d2) { context.disassemble(memory); exit() }'"
   },
   "keywords": [],
   "author": "",

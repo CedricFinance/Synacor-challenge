@@ -8,6 +8,10 @@ import * as read from './readChar';
 
 const readChar = read.init(inputs, () => { debug_enabled = true; });
 
+const context = {
+  disassemble
+};
+
 var debug_enabled = false
 
 function exit() {
