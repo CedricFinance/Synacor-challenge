@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import 'mocha';
 
 import { ResultType } from '../../src/disassembly/opcode';
-import { disassembleAt } from '../../src/disassembly/disassembler';
+import Disassembler, { disassembleAt } from '../../src/disassembly/disassembler';
 import { Register, Address, Value, Character } from '../../src/disassembly/parameters';
 
 describe('disassembleAt', () => {
@@ -219,4 +219,17 @@ describe('disassembleAt', () => {
     expect(result.address).to.equal(0);
   });
 
+});
+
+describe("Disassembler", () => {
+  it("should decompile a simple program", () => {
+    const program = [0x0013, 0x0061, 0x0000];
+    const disassembler = new Disassembler(program);
+
+    const disassembledProgram = disassembler.run();
+
+    expect(disassembledProgram).to.have.length(2);
+    expect(disassembledProgram[0].opcode.name).to.equal("out");
+    expect(disassembledProgram[1].opcode.name).to.equal("halt");
+  })
 });
