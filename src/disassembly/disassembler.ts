@@ -71,11 +71,7 @@ export function disassembleAt(program: number[], address: number) {
   };
 
   try {
-    if (opcode.decodeParameters) {
-      result.decodedParameters = opcode.decodeParameters(rawParameters);
-    } else {
-      result.decodedParameters = result.rawParameters.map( (value, index) => DecodeParameter(opcode.parameterTypes[index], value));
-    }
+    result.decodedParameters = result.rawParameters.map( (value, index) => DecodeParameter(opcode.parameterTypes[index], value));
   } catch(err) {
     //console.error(new Error(`An error occured while decoding parameters for opcode ${JSON.stringify(result)}: ${err}`));
     return invalidOpcode(address, value);

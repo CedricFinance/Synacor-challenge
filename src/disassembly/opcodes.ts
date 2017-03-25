@@ -48,8 +48,7 @@ export interface OpcodeDefinition {
   value: number,
   name: string,
   length: number,
-  decodeParameters?: { (parameters: number[]): string[] },
-  parameterTypes?: Array<ParameterType|ParameterType[]>
+  parameterTypes: Array<ParameterType|ParameterType[]>
 }
 
 const opcodes: OpcodeDefinition[] = [
