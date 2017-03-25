@@ -59,5 +59,18 @@ describe('disassembly', () => {
       });
     });
 
+    describe('Value', () => {
+      it('should accept a value', () => {
+        const result = new parameters.Value(0x0061);
+        expect(result.toString(vmContext)).to.equal("0061");
+      });
+
+      it('should display the label if any', () => {
+        vmContext.labels.set(0x23ef, "test");
+
+        const result = new parameters.Value(0x23ef);
+        expect(result.toString(vmContext)).to.equal("23ef /* test */");
+      });
+    });
   });
 });
