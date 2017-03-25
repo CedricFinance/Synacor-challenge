@@ -2,7 +2,7 @@ import { sprintf } from 'sprintf';
 
 import { DisassemblyResult, ResultType } from './opcode';
 import * as labels from '../labels';
-import opcodes from './opcodes';
+import opcodes, { DecodeParameter } from './opcodes';
 
 function toHexString(value: number): string {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
@@ -75,7 +75,11 @@ export function disassembleAt(program: number[], address: number) {
   };
 
   try {
-    result.decodedParameters = opcode.decodeParameters(rawParameters);
+    if (opcode.decodeParameters) {
+      result.decodedParameters = opcode.decodeParameters(rawParameters);
+    } else {
+      result.decodedParameters = result.rawParameters.map( (value, index) => DecodeParameter(opcode.parameterTypes[index], value));
+    }
   } catch(err) {
     console.error(new Error(`An error occured while decoding parameters for opcode ${JSON.stringify(result)}: ${err}`));
     return invalidOpcode(address, value);

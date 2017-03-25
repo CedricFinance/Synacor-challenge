@@ -1,5 +1,5 @@
 import { loadProgram } from '../loader';
-import { printCode } from './print.js';
+import { printCode } from './print';
 import Disassembler, { disassembleAt } from './disassembler';
 
 export function disassemble(program: number[], { startAddress = 0, maxAddress = program.length, callback = printCode } = {}) {

@@ -8,9 +8,17 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsc",
-    "start": "node dist/bin/synacor.js run challenge.bin",
-    "disass": "node dist/bin/synacor.js disassemble challenge.bin",
-    "startDisass": "node dist/bin/synacor.js run challenge.bin --eval 'if (pc === 0x3d2) { context.disassemble(memory); exit() }'"
+    "start": "ts-node bin/synacor.ts run challenge.bin",
+    "disass": "ts-node bin/synacor.ts disassemble challenge.bin",
+    "startDisass": "ts-node bin/synacor.ts run challenge.bin --eval 'if (pc === 0x3d2) { context.disassemble(memory); exit() }'",
+    "test": "mocha -r ts-node/register test/**/*.ts",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "test": {
+      "patterns": ["src", "test"],
+      "extensions": "ts"
+    }
   },
   "keywords": [],
   "author": "",
@@ -24,7 +32,16 @@
     "sprintf": "^0.1.5"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.2",
+    "@types/chai": "^3.4.35",
+    "@types/chalk": "^0.4.31",
+    "@types/mocha": "^2.2.40",
     "@types/node": "^7.0.10",
+    "@types/sprintf": "0.0.28",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "npm-watch": "^0.1.8",
+    "ts-node": "^3.0.2",
     "typescript": "^2.2.1"
   },
   "description": ""

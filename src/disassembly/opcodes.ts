@@ -1,12 +1,26 @@
 import { sprintf } from 'sprintf';
 
 import * as labels from '../labels';
+import * as parameters from './parameters';
+
+enum ParameterType {
+  Register
+}
+
+
+export function DecodeParameter(type: ParameterType, value: number) {
+  switch(type) {
+    case ParameterType.Register:
+      return new parameters.Register(value);
+  }
+}
 
 export interface OpcodeDefinition {
   value: number,
   name: string,
   length: number,
-  decodeParameters: { (parameters: number[]): string[] }
+  decodeParameters?: { (parameters: number[]): string[] },
+  parameterTypes?: ParameterType[]
 }
 
 function toHexString(value: number): string {
@@ -125,10 +139,10 @@ function safeStringFromCharCode(charCode: number) {
 }
 
 const opcodes: OpcodeDefinition[] = [
-  { value: 0,  length: 1, name: "halt", decodeParameters: hexParams },
+  { value: 0,  length: 1, name: "halt", parameterTypes: [] },
   { value: 1,  length: 3, name: "set",  decodeParameters: decodeRegisterAndOneValueOrRegister },
   { value: 2,  length: 2, name: "push", decodeParameters: decodeRegisterOrValue },
-  { value: 3,  length: 2, name: "pop",  decodeParameters: decodeOneRegister },
+  { value: 3,  length: 2, name: "pop",  parameterTypes: [ ParameterType.Register ] },
   { value: 4,  length: 4, name: "eq",   decodeParameters: decodeRegisterAndTwoValueOrRegister },
   { value: 5,  length: 4, name: "gt",   decodeParameters: decodeRegisterAndTwoValueOrRegister },
   { value: 6,  length: 2, name: "jmp",  decodeParameters: decodeOneAddress },
@@ -143,7 +157,7 @@ const opcodes: OpcodeDefinition[] = [
   { value: 15, length: 3, name: "rmem", decodeParameters: ([a,b]) => [toRegister(a), toAddressOrRegister(b)] },
   { value: 16, length: 3, name: "wmem", decodeParameters: decodeTwoRegisterOrValue },
   { value: 17, length: 2, name: "call", decodeParameters: decodeRegisterOrAddress },
-  { value: 18, length: 1, name: "ret",  decodeParameters: hexParams },
+  { value: 18, length: 1, name: "ret",  parameterTypes: [] },
   { value: 19, length: 2, name: "out",
     decodeParameters: ([value]) => {
       if (isRegister(value)) {
@@ -152,8 +166,8 @@ const opcodes: OpcodeDefinition[] = [
       return [ safeStringFromCharCode(value) ];
     }
   },
-  { value: 20, length: 2, name: "in",   decodeParameters: hexParams },
-  { value: 21, length: 1, name: "noop", decodeParameters: hexParams },
+  { value: 20, length: 2, name: "in",   parameterTypes: [ ParameterType.Register ] },
+  { value: 21, length: 1, name: "noop", parameterTypes: [] },
 ];
 
 export default opcodes;
