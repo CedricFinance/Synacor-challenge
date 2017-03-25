@@ -46,7 +46,7 @@ function printLine(result: DisassemblyResult) {
     toHexString(result.rawParameters[2]),
     result.label,
     result.opcode.name,
-    result.decodedParameters.join(" ")
+    result.decodedParameters.map(p => p.toString({ labels })).join(" ")
   )));
 
   if (result.opcode.name !== "???" && newlineOpcodes.includes(result.opcode.value)) {

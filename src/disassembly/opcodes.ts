@@ -4,15 +4,41 @@ import * as labels from '../labels';
 import * as parameters from './parameters';
 
 enum ParameterType {
-  Register
+  Register,
+  Address,
+  Value
 }
 
 
-export function DecodeParameter(type: ParameterType, value: number) {
-  switch(type) {
-    case ParameterType.Register:
-      return new parameters.Register(value);
+export function DecodeParameter(parameterType: ParameterType|ParameterType[], value: number) {
+  var types: ParameterType[];
+
+  if (!Array.isArray(parameterType)) {
+    types = [ parameterType ];
+  } else {
+    types = parameterType;
   }
+
+  const errors: string[] = [];
+
+  for(var type of types) {
+    try {
+      switch(type) {
+        case ParameterType.Register:
+          return new parameters.Register(value);
+        case ParameterType.Address:
+          return new parameters.Address(value);
+        case ParameterType.Value:
+          return new parameters.Value(value);
+      }
+    } catch(error) {
+      if (error instanceof Error) {
+        errors.push(error.message);
+      }
+    }
+  }
+
+  throw new Error("Failed to decode parameter: " + errors.join(". "));
 }
 
 export interface OpcodeDefinition {
@@ -20,7 +46,7 @@ export interface OpcodeDefinition {
   name: string,
   length: number,
   decodeParameters?: { (parameters: number[]): string[] },
-  parameterTypes?: ParameterType[]
+  parameterTypes?: Array<ParameterType|ParameterType[]>
 }
 
 function toHexString(value: number): string {
@@ -83,25 +109,6 @@ function toValueOrRegister(v: number) {
   return toLabeledValue(v);
 }
 
-function decodeConditionals([value, address]: number[]) {
-  return [ toValueOrRegister(value), toAddressOrLabel(address) ];
-}
-
-function decodeOneAddress([address]: number[]) {
-  return [ toAddressOrLabel(address) ];
-}
-
-function decodeOneRegister([register]: number[]) {
-  validateRegister(register);
-  return [ toRegister(register) ];
-}
-
-function decodeRegisterAndValue([register, value]: number[]) {
-  validateRegister(register);
-  validateValue(value);
-  return [ toRegister(register), toHexString(value) ];
-}
-
 function decodeRegisterOrAddress([registerOrAddress]: number[]) {
   return [ toAddressOrRegister(registerOrAddress) ];
 }
@@ -114,13 +121,6 @@ function decodeTwoRegisterOrValue([registerOrValue1, registerOrValue2]: number[]
   return [ toValueOrRegister(registerOrValue1), toValueOrRegister(registerOrValue2) ];
 }
 
-function decodeRegisterAndTwoValues([register, first, second]: number[]) {
-  validateRegister(register);
-  validateValue(first);
-  validateValue(second);
-  return [ toRegister(register), toHexString(first), toHexString(second) ];
-}
-
 function decodeRegisterAndTwoValueOrRegister([register, first, second]: number[]) {
   return [ toRegister(register), toValueOrRegister(first), toValueOrRegister(second) ];
 }
@@ -128,10 +128,6 @@ function decodeRegisterAndTwoValueOrRegister([register, first, second]: number[]
 function decodeRegisterAndOneValueOrRegister([register, valueOrRegister]: number[]) {
   validateRegister(register);
   return [ toRegister(register), toValueOrRegister(valueOrRegister) ];
-}
-
-function hexParams(params: number[]) {
-  return params.map(toHexString);
 }
 
 function safeStringFromCharCode(charCode: number) {
@@ -145,9 +141,9 @@ const opcodes: OpcodeDefinition[] = [
   { value: 3,  length: 2, name: "pop",  parameterTypes: [ ParameterType.Register ] },
   { value: 4,  length: 4, name: "eq",   decodeParameters: decodeRegisterAndTwoValueOrRegister },
   { value: 5,  length: 4, name: "gt",   decodeParameters: decodeRegisterAndTwoValueOrRegister },
-  { value: 6,  length: 2, name: "jmp",  decodeParameters: decodeOneAddress },
-  { value: 7,  length: 3, name: "jt",   decodeParameters: decodeConditionals },
-  { value: 8,  length: 3, name: "jf",   decodeParameters: decodeConditionals },
+  { value: 6,  length: 2, name: "jmp",  parameterTypes: [ ParameterType.Address ] },
+  { value: 7,  length: 3, name: "jt",   parameterTypes: [ [ParameterType.Register, ParameterType.Value], ParameterType.Address] },
+  { value: 8,  length: 3, name: "jf",   parameterTypes: [ [ParameterType.Register, ParameterType.Value], ParameterType.Address] },
   { value: 9,  length: 4, name: "add",  decodeParameters: decodeRegisterAndTwoValueOrRegister },
   { value: 10, length: 4, name: "mult", decodeParameters: decodeRegisterAndTwoValueOrRegister },
   { value: 11, length: 4, name: "mod",  decodeParameters: decodeRegisterAndTwoValueOrRegister },

@@ -49,3 +49,20 @@ export class Address implements Parameter {
     return toHexString(this.address);
   }
 }
+
+export class Value implements Parameter {
+  private value: number;
+
+  constructor(value: number) {
+    this.value = value;
+  }
+
+  toString(context: Context) {
+    var suffix = "";
+    if (context.labels.has(this.value)) {
+      var label = context.labels.get(this.value);
+      suffix = ` /* ${label} */`;
+    }
+    return toHexString(this.value)+suffix;
+  }
+}
