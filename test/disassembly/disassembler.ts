@@ -22,6 +22,24 @@ describe('disassembleAt', () => {
     expect(result.decodedParameters).to.deep.equal([ new Register(0x8000) ]);
   });
 
+  for(let p of [ {opcode:"eq", value: 0x04}, {opcode:"gt", value: 0x05} ]) {
+    it(`should disassemble "${p.opcode}" ${p.value} opcode with registers`, () => {
+      const result = disassembleAt( [ p.value, 0x8000, 0x8001, 0x8002 ], 0);
+      expect(result.type).to.equal(ResultType.Code);
+      expect(result.address).to.equal(0);
+      expect(result.rawParameters).to.deep.equal([ 0x8000, 0x8001, 0x8002 ]);
+      expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Register(0x8001), new Register(0x8002) ]);
+    });
+
+    it(`should disassemble "${p.opcode}" ${p.value} opcode with values`, () => {
+      const result = disassembleAt( [ p.value, 0x8000, 0x1234, 0x0012 ], 0);
+      expect(result.type).to.equal(ResultType.Code);
+      expect(result.address).to.equal(0);
+      expect(result.rawParameters).to.deep.equal([ 0x8000, 0x1234, 0x0012 ]);
+      expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Value(0x1234), new Value(0x0012) ]);
+    });
+  }
+
   it('should disassemble "jmp" opcode', () => {
     const result = disassembleAt( [ 0x0006, 0x23a8 ], 0);
     expect(result.type).to.equal(ResultType.Code);
@@ -30,7 +48,7 @@ describe('disassembleAt', () => {
     expect(result.decodedParameters).to.deep.equal([ new Address(0x23a8) ]);
   });
 
-  for(var p of [ {opcode:"jt", value: 0x06}, {opcode:"jf", value: 0x07} ]) {
+  for(let p of [ {opcode:"jt", value: 0x07}, {opcode:"jf", value: 0x08} ]) {
     it(`should disassemble "${p.opcode}" opcode with a register`, () => {
       const result = disassembleAt( [ p.value, 0x8000, 0x23a8 ], 0);
       expect(result.type).to.equal(ResultType.Code);
@@ -45,6 +63,24 @@ describe('disassembleAt', () => {
       expect(result.address).to.equal(0);
       expect(result.rawParameters).to.deep.equal([ 0x0010, 0x23a8 ]);
       expect(result.decodedParameters).to.deep.equal([ new Value(0x0010), new Address(0x23a8) ]);
+    });
+  }
+
+  for(let p of [ {opcode:"add", value: 0x09}, {opcode:"mult", value: 0x0a}, {opcode:"mod", value: 0x0b}, {opcode:"and", value: 0x0c}, {opcode:"or", value: 0x0d} ]) {
+    it(`should disassemble "${p.opcode}" ${p.value} opcode with registers`, () => {
+      const result = disassembleAt( [ p.value, 0x8000, 0x8001, 0x8002 ], 0);
+      expect(result.type).to.equal(ResultType.Code);
+      expect(result.address).to.equal(0);
+      expect(result.rawParameters).to.deep.equal([ 0x8000, 0x8001, 0x8002 ]);
+      expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Register(0x8001), new Register(0x8002) ]);
+    });
+
+    it(`should disassemble "${p.opcode}" ${p.value} opcode with values`, () => {
+      const result = disassembleAt( [ p.value, 0x8000, 0x1234, 0x0012 ], 0);
+      expect(result.type).to.equal(ResultType.Code);
+      expect(result.address).to.equal(0);
+      expect(result.rawParameters).to.deep.equal([ 0x8000, 0x1234, 0x0012 ]);
+      expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Value(0x1234), new Value(0x0012) ]);
     });
   }
 
