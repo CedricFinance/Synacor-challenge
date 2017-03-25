@@ -14,6 +14,38 @@ describe('disassembleAt', () => {
     expect(result.decodedParameters).to.deep.equal([]);
   });
 
+  it('should disassemble "set" opcode with a register', () => {
+    const result = disassembleAt( [ 0x0001, 0x8000, 0x8001 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x8000, 0x8001 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Register(0x8001) ]);
+  });
+
+  it('should disassemble "set" opcode with a value', () => {
+    const result = disassembleAt( [ 0x0001, 0x8000, 0x1234 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x8000, 0x1234 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Value(0x1234) ]);
+  });
+
+  it('should disassemble "push" opcode with a register', () => {
+    const result = disassembleAt( [ 0x0002, 0x8000 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x8000 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Register(0x8000) ]);
+  });
+
+  it('should disassemble "push" opcode with a value', () => {
+    const result = disassembleAt( [ 0x0002, 0x1234], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x1234 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Value(0x1234) ]);
+  });
+
   it('should disassemble "pop" opcode', () => {
     const result = disassembleAt( [ 0x0003, 0x8000 ], 0);
     expect(result.type).to.equal(ResultType.Code);
@@ -83,6 +115,70 @@ describe('disassembleAt', () => {
       expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Value(0x1234), new Value(0x0012) ]);
     });
   }
+
+  it('should disassemble "not" opcode with a register', () => {
+    const result = disassembleAt( [ 0x000e, 0x8000, 0x8000 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x8000, 0x8000 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Register(0x8000) ]);
+  });
+
+  it('should disassemble "not" opcode with a value', () => {
+    const result = disassembleAt( [ 0x000e, 0x8000, 0x1234 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x8000, 0x1234 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Value(0x1234) ]);
+  });
+
+  it('should disassemble "rmem" opcode with an address', () => {
+    const result = disassembleAt( [ 0x000f, 0x8000, 0x1234 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x8000, 0x1234 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Address(0x1234) ]);
+  });
+
+  it('should disassemble "rmem" opcode with a register', () => {
+    const result = disassembleAt( [ 0x000f, 0x8000, 0x8000 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x8000, 0x8000 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Register(0x8000) ]);
+  });
+
+  it('should disassemble "wmem" opcode with a value', () => {
+    const result = disassembleAt( [ 0x0010, 0x8000, 0x1234 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x8000, 0x1234 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Value(0x1234) ]);
+  });
+
+  it('should disassemble "wmem" opcode with a register', () => {
+    const result = disassembleAt( [ 0x0010, 0x8000, 0x8001 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x8000, 0x8001 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Register(0x8000), new Register(0x8001) ]);
+  });
+
+  it('should disassemble "call" opcode with an address', () => {
+    const result = disassembleAt( [ 0x0011, 0x1234 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x1234 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Address(0x1234) ]);
+  });
+
+  it('should disassemble "call" opcode with a register', () => {
+    const result = disassembleAt( [ 0x0011, 0x8000 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x8000 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Register(0x8000) ]);
+  });
 
   it('should disassemble "ret" opcode', () => {
     const result = disassembleAt( [ 0x0012 ], 0);
