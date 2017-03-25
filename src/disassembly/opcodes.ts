@@ -6,7 +6,8 @@ import * as parameters from './parameters';
 enum ParameterType {
   Register,
   Address,
-  Value
+  Value,
+  Character
 }
 
 
@@ -30,7 +31,9 @@ export function DecodeParameter(parameterType: ParameterType|ParameterType[], va
           return new parameters.Address(value);
         case ParameterType.Value:
           return new parameters.Value(value);
-      }
+        case ParameterType.Character:
+          return new parameters.Character(value);
+        }
     } catch(error) {
       if (error instanceof Error) {
         errors.push(error.message);
@@ -130,10 +133,6 @@ function decodeRegisterAndOneValueOrRegister([register, valueOrRegister]: number
   return [ toRegister(register), toValueOrRegister(valueOrRegister) ];
 }
 
-function safeStringFromCharCode(charCode: number) {
-  return charCode === 10 ? "'\\n'" : `'${String.fromCharCode(charCode)}'`
-}
-
 const opcodes: OpcodeDefinition[] = [
   { value: 0,  length: 1, name: "halt", parameterTypes: [] },
   { value: 1,  length: 3, name: "set",  decodeParameters: decodeRegisterAndOneValueOrRegister },
@@ -154,14 +153,7 @@ const opcodes: OpcodeDefinition[] = [
   { value: 16, length: 3, name: "wmem", decodeParameters: decodeTwoRegisterOrValue },
   { value: 17, length: 2, name: "call", decodeParameters: decodeRegisterOrAddress },
   { value: 18, length: 1, name: "ret",  parameterTypes: [] },
-  { value: 19, length: 2, name: "out",
-    decodeParameters: ([value]) => {
-      if (isRegister(value)) {
-        return [ toRegister(value) ];
-      }
-      return [ safeStringFromCharCode(value) ];
-    }
-  },
+  { value: 19, length: 2, name: "out",  parameterTypes: [ [ParameterType.Register, ParameterType.Character] ] },
   { value: 20, length: 2, name: "in",   parameterTypes: [ ParameterType.Register ] },
   { value: 21, length: 1, name: "noop", parameterTypes: [] },
 ];

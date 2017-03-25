@@ -66,3 +66,15 @@ export class Value implements Parameter {
     return toHexString(this.value)+suffix;
   }
 }
+
+export class Character implements Parameter {
+  private charCode: number;
+
+  constructor(value: number) {
+    this.charCode = value;
+  }
+
+  toString(context: Context) {
+    return this.charCode === 10 ? "'\\n'" : `'${String.fromCharCode(this.charCode)}'`
+  }
+}

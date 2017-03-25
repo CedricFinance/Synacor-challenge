@@ -153,7 +153,7 @@ function mergeOutOpcode(mergedOut: MergedDisassemblyResult, result: DisassemblyR
     }
   } else {
     mergedOut.rawParameters.push(result.rawParameters[0]);
-    mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + result.decodedParameters[0].slice(1);
+    mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].toString().slice(0, mergedOut.decodedParameters[0].length-1) + result.decodedParameters[0].toString().slice(1);
   }
   return mergedOut;
 }

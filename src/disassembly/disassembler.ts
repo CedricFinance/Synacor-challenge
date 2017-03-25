@@ -12,10 +12,6 @@ function safeStringFromCharCode(charCode: number) {
   return charCode === 10 ? "'\\n'" : `'${String.fromCharCode(charCode)}'`
 }
 
-function hexParams(params: number[]) {
-  return params.map(toHexString);
-}
-
 function toAddressOrLabel(address: number) {
   const label = labels.get(address);
 

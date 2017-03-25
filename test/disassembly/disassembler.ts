@@ -3,7 +3,7 @@ import 'mocha';
 
 import { ResultType } from '../../src/disassembly/opcode';
 import { disassembleAt } from '../../src/disassembly/disassembler';
-import { Register, Address, Value } from '../../src/disassembly/parameters';
+import { Register, Address, Value, Character } from '../../src/disassembly/parameters';
 
 describe('disassembleAt', () => {
   it('should disassemble "halt" opcode', () => {
@@ -54,6 +54,22 @@ describe('disassembleAt', () => {
     expect(result.address).to.equal(0);
     expect(result.rawParameters).to.deep.equal([]);
     expect(result.decodedParameters).to.deep.equal([]);
+  });
+
+  it('should disassemble "out" opcode with a register', () => {
+    const result = disassembleAt( [ 0x0013, 0x8000 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x8000 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Register(0x8000) ]);
+  });
+
+  it('should disassemble "out" opcode with a character', () => {
+    const result = disassembleAt( [ 0x0013, 0x0061 ], 0);
+    expect(result.type).to.equal(ResultType.Code);
+    expect(result.address).to.equal(0);
+    expect(result.rawParameters).to.deep.equal([ 0x0061 ]);
+    expect(result.decodedParameters).to.deep.equal([ new Character(0x0061) ]);
   });
 
   it('should disassemble "noop" opcode', () => {

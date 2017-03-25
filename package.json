@@ -12,11 +12,15 @@
     "disass": "ts-node bin/synacor.ts disassemble challenge.bin",
     "startDisass": "ts-node bin/synacor.ts run challenge.bin --eval 'if (pc === 0x3d2) { context.disassemble(memory); exit() }'",
     "test": "mocha -r ts-node/register test/**/*.ts",
-    "watch": "npm-watch"
+    "watch": "npm-watch",
+    "coverage": "nyc npm test"
   },
   "watch": {
     "test": {
-      "patterns": ["src", "test"],
+      "patterns": [
+        "src",
+        "test"
+      ],
       "extensions": "ts"
     }
   },
@@ -41,8 +45,29 @@
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "npm-watch": "^0.1.8",
+    "nyc": "^10.1.2",
     "ts-node": "^3.0.2",
     "typescript": "^2.2.1"
   },
-  "description": ""
+  "description": "",
+  "nyc": {
+    "include": [
+      "src/*.ts",
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "typings"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "json",
+      "html"
+    ],
+    "all": true
+  }
 }

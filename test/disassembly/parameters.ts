@@ -34,7 +34,6 @@ describe('disassembly', () => {
     });
 
     describe('Address', () => {
-
       it('should accept an address', () => {
         const result = new parameters.Address(0x23ef);
         expect(result.toString(vmContext)).to.equal("23ef");
@@ -47,5 +46,18 @@ describe('disassembly', () => {
         expect(result.toString(vmContext)).to.equal("test");
       });
     });
+
+    describe('Character', () => {
+      it('should accept a value', () => {
+        const result = new parameters.Character(0x0061);
+        expect(result.toString(vmContext)).to.equal("'a'");
+      });
+
+      it('should accept escape the newline char', () => {
+        const result = new parameters.Character(0x000a);
+        expect(result.toString(vmContext)).to.equal("'\\n'");
+      });
+    });
+
   });
 });
