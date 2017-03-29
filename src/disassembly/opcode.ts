@@ -29,13 +29,17 @@ export class DisassemblyResult {
   }
 
   toCode() {
-    var code = this.opcode.name;
+    var codeParts: string[] = [];
 
-    if (this.decodedParameters.length > 0) {
-      code += " " + this.decodedParameters.map(p => p.toString({ labels })).join(" ");
+    if (this.opcode.name !== "???") {
+      codeParts.push(this.opcode.name);
     }
 
-    return code;
+    if (this.decodedParameters.length > 0) {
+      codeParts.push(this.decodedParameters.map(p => p.toString({ labels })).join(" "));
+    }
+
+    return codeParts.join(" ");
   }
 }
 
@@ -46,7 +50,7 @@ export enum MergedResultKind {
 import * as labels from '../labels';
 
 function getKind(result: DisassemblyResult) {
-  const label = labels.get(result.address);
+  const label = result.label;
   if (label.startsWith("a_")) {
     return MergedResultKind.Array;
   }
