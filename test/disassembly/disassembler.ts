@@ -229,7 +229,7 @@ describe("Disassembler", () => {
     const disassembledProgram = disassembler.run();
 
     expect(disassembledProgram).to.have.length(2);
-    expect(disassembledProgram[0].opcode.name).to.equal("out");
-    expect(disassembledProgram[1].opcode.name).to.equal("halt");
+    expect(disassembledProgram[0].toCode()).to.equal("out 'a'");
+    expect(disassembledProgram[1].toCode()).to.equal("halt");
   })
 });

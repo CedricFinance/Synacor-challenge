@@ -34,15 +34,14 @@ function printLine(result: DisassemblyResult) {
 
   const chalkColor = result.type === ResultType.Code ? chalk.cyan : chalk.green;
 
-  console.log(chalkColor(sprintf("0x%06x %04x %4s %4s %4s %-36s %s %s",
+  console.log(chalkColor(sprintf("0x%06x %04x %4s %4s %4s %-36s %s",
     result.address,
     result.opcode.value,
     toHexString(result.rawParameters[0]),
     toHexString(result.rawParameters[1]),
     toHexString(result.rawParameters[2]),
     result.label,
-    result.opcode.name,
-    result.decodedParameters.map(p => p.toString({ labels })).join(" ")
+    result.toCode()
   )));
 
   if (result.opcode.name !== "???" && newlineOpcodes.includes(result.opcode.value)) {

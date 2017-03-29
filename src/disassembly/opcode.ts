@@ -27,6 +27,16 @@ export class DisassemblyResult {
     this.rawParameters = rawParameters;
     this.decodedParameters = decodedParameters;
   }
+
+  toCode() {
+    var code = this.opcode.name;
+
+    if (this.decodedParameters.length > 0) {
+      code += " " + this.decodedParameters.map(p => p.toString({ labels })).join(" ");
+    }
+
+    return code;
+  }
 }
 
 export enum MergedResultKind {
