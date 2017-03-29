@@ -12,10 +12,6 @@ const newlineOpcodes = [ HALT, RET];
 var mergedOut: MergedDisassemblyResult;
 var emptyLine = false;
 
-function safeStringFromCharCode(charCode: number) {
-  return charCode === 10 ? "'\\n'" : `'${String.fromCharCode(charCode)}'`
-}
-
 function toHexString(value: number) {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
 }
@@ -76,7 +72,7 @@ function endMerge(result: DisassemblyResult) {
 export function printCode(result: DisassemblyResult) {
   if (mergedOut) {
     if (canMerge(result)) {
-      mergedOut = mergeOutOpcode(mergedOut, result);
+      mergedOut.merge(result);
 
       if (endMerge(result)) {
         printLine(mergedOut);
@@ -91,52 +87,10 @@ export function printCode(result: DisassemblyResult) {
   }
 
   if (startMerge(result)) {
-    mergedOut = mergeOutOpcode(mergedOut, result);
+    mergedOut = new MergedDisassemblyResult(result);
   } else {
     printLine(result);
   }
-}
-
-function toLabeledValue(address: number) {
-  let suffix = '';
-  const label = labels.get(address);
-
-  if (label.length > 0) {
-    suffix = ` /* = ${label} */`;
-  }
-
-  return `${address}${suffix}`;
-}
-
-function mergeOutOpcode(mergedOut: MergedDisassemblyResult, result: DisassemblyResult) {
-  var startingMerge = false;
-
-  if (typeof mergedOut === "undefined") {
-    startingMerge = true;
-    mergedOut = new MergedDisassemblyResult(result);
-    if (mergedOut.kind === MergedResultKind.Array) {
-      mergedOut.decodedParameters = [[]];
-    } else {
-      mergedOut.decodedParameters = ["''"];
-    }
-
-  }
-
-  if (mergedOut.kind === MergedResultKind.String) {
-    if (!startingMerge) {
-      mergedOut.rawParameters.push(result.opcode.value);
-      mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].slice(0, mergedOut.decodedParameters[0].length-1) + safeStringFromCharCode(result.opcode.value).slice(1);
-    }
-  } else if (mergedOut.kind === MergedResultKind.Array) {
-    if (!startingMerge) {
-      mergedOut.rawParameters.push(result.opcode.value);
-      mergedOut.decodedParameters[0].push(toLabeledValue(result.opcode.value));
-    }
-  } else {
-    mergedOut.rawParameters.push(result.rawParameters[0]);
-    mergedOut.decodedParameters[0] = mergedOut.decodedParameters[0].toString().slice(0, mergedOut.decodedParameters[0].length-1) + result.decodedParameters[0].toString().slice(1);
-  }
-  return mergedOut;
 }
 
 export class CodePrinter {

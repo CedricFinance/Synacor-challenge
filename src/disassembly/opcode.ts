@@ -46,11 +46,51 @@ function getKind(result: DisassemblyResult) {
   return MergedResultKind.Out;
 }
 
+function safeStringFromCharCode(charCode: number) {
+  return charCode === 10 ? "'\\n'" : `'${String.fromCharCode(charCode)}'`
+}
+
+function toLabeledValue(address: number) {
+  let suffix = '';
+  const label = labels.get(address);
+
+  if (label.length > 0) {
+    suffix = ` /* = ${label} */`;
+  }
+
+  return `${address}${suffix}`;
+}
+
 export class MergedDisassemblyResult extends DisassemblyResult {
   kind: MergedResultKind;
 
   constructor(result: DisassemblyResult) {
     super(result.type, result.address, result.label, result.opcode, result.rawParameters, result.decodedParameters);
     this.kind = getKind(result);
+
+    if (this.kind === MergedResultKind.Array) {
+      this.decodedParameters = [[]];
+    } else {
+      this.decodedParameters = ["''"];
+    }
+
+    if (this.kind !== MergedResultKind.Array && this.kind !== MergedResultKind.String)
+    {
+      this.rawParameters.push(result.rawParameters[0]);
+      this.decodedParameters[0] = this.decodedParameters[0].toString().slice(0, this.decodedParameters[0].length-1) + result.decodedParameters[0].toString().slice(1);
+    }
+  }
+
+  merge(result: DisassemblyResult) {
+    if (this.kind === MergedResultKind.String) {
+      this.rawParameters.push(result.opcode.value);
+      this.decodedParameters[0] = this.decodedParameters[0].slice(0, this.decodedParameters[0].length-1) + safeStringFromCharCode(result.opcode.value).slice(1);
+    } else if (this.kind === MergedResultKind.Array) {
+      this.rawParameters.push(result.opcode.value);
+      this.decodedParameters[0].push(toLabeledValue(result.opcode.value));
+    } else {
+      this.rawParameters.push(result.rawParameters[0]);
+      this.decodedParameters[0] = this.decodedParameters[0].toString().slice(0, this.decodedParameters[0].length-1) + result.decodedParameters[0].toString().slice(1);
+    }
   }
 }
