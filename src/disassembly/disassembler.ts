@@ -35,14 +35,14 @@ function invalidOpcode(address: number, value: number): DisassemblyResult {
     decodedParameters = [ `${value} ${safeStringFromCharCode(value)} ${labels.get(value)}` ];
   }
 
-  return {
-    type: ResultType.Code,
+  return new DisassemblyResult(
+    ResultType.Code,
     address,
     label,
-    opcode: { value, name: '???', length: 1 },
-    rawParameters: [],
+    { value, name: '???', length: 1 },
+    [],
     decodedParameters
-  };
+  );
 }
 
 function data(address: number, value: number) {
@@ -61,14 +61,14 @@ export function disassembleAt(program: number[], address: number) {
   const opcode = opcodes[value];
   const rawParameters = program.slice(address+1, address+1+opcode.length-1);
 
-  const result: DisassemblyResult = {
-    type: ResultType.Code,
-    label: labels.get(address),
+  const result: DisassemblyResult = new DisassemblyResult(
+    ResultType.Code,
     address,
+    labels.get(address),
     opcode,
     rawParameters,
-    decodedParameters: []
-  };
+    []
+  );
 
   try {
     result.decodedParameters = result.rawParameters.map( (value, index) => DecodeParameter(opcode.parameterTypes[index], value));

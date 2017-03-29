@@ -97,17 +97,6 @@ export function printCode(result: DisassemblyResult) {
   }
 }
 
-function getKind(result: DisassemblyResult) {
-  const label = labels.get(result.address);
-  if (label.startsWith("a_")) {
-    return MergedResultKind.Array;
-  }
-  if (label.startsWith("s_")) {
-    return MergedResultKind.String;
-  }
-  return MergedResultKind.Out;
-}
-
 function toLabeledValue(address: number) {
   let suffix = '';
   const label = labels.get(address);
@@ -124,15 +113,7 @@ function mergeOutOpcode(mergedOut: MergedDisassemblyResult, result: DisassemblyR
 
   if (typeof mergedOut === "undefined") {
     startingMerge = true;
-    mergedOut = {
-      type: result.type,
-      address: result.address,
-      label: result.label,
-      opcode: result.opcode,
-      rawParameters: [],
-      decodedParameters: [],
-      kind: getKind(result)
-    };
+    mergedOut = new MergedDisassemblyResult(result);
     if (mergedOut.kind === MergedResultKind.Array) {
       mergedOut.decodedParameters = [[]];
     } else {
