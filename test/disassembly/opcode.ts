@@ -51,4 +51,59 @@ describe('MergedDisassemblyResult', () => {
     mergeResult.merge(thirdResult);
     expect(mergeResult.toCode()).to.equal("97,98");
   });
+
+  it('should stop merge after newline char', () => {
+    const firstResult = new DisassemblyResult(ResultType.Data, 0, "s_anl", { name: "???", length: 1, value: 0x2 }, [], []);
+    const secondResult = new DisassemblyResult(ResultType.Data, 1, "", { name: "???", length: 1, value: 0x61 }, [], []);
+    const thirdResult = new DisassemblyResult(ResultType.Data, 1, "", { name: "???", length: 1, value: 0x0a }, [], []);
+    const mergeResult = new MergedDisassemblyResult(firstResult);
+
+    expect(mergeResult.isStopped()).to.be.false;
+    expect(mergeResult.canMerge(secondResult)).to.be.true;
+
+    mergeResult.merge(secondResult);
+
+    expect(mergeResult.isStopped()).to.be.false;
+    expect(mergeResult.canMerge(thirdResult)).to.be.true;
+
+    mergeResult.merge(thirdResult);
+
+    expect(mergeResult.isStopped()).to.be.true;
+  });
+
+  it('should stop merge when all items have been merged', () => {
+    const firstResult = new DisassemblyResult(ResultType.Data, 0, "a_ab", { name: "???", length: 1, value: 0x2 }, [], []);
+    const secondResult = new DisassemblyResult(ResultType.Data, 1, "", { name: "???", length: 1, value: 0x61 }, [], []);
+    const thirdResult = new DisassemblyResult(ResultType.Data, 1, "", { name: "???", length: 1, value: 0x62 }, [], []);
+    const mergeResult = new MergedDisassemblyResult(firstResult);
+
+    expect(mergeResult.isStopped()).to.be.false;
+    expect(mergeResult.canMerge(secondResult)).to.be.true;
+
+    mergeResult.merge(secondResult);
+
+    expect(mergeResult.isStopped()).to.be.false;
+    expect(mergeResult.canMerge(thirdResult)).to.be.true;
+
+    mergeResult.merge(thirdResult);
+
+    expect(mergeResult.isStopped()).to.be.true;
+  });
+
+  describe("startMerge", () => {
+    it('should return true for arrays', () => {
+      const result = new DisassemblyResult(ResultType.Data, 0, "a_ab", { name: "???", length: 1, value: 0x2 }, [], []);
+      expect(MergedDisassemblyResult.startMerge(result)).to.be.true;
+    });
+
+    it('should return true for strings', () => {
+      const result = new DisassemblyResult(ResultType.Data, 0, "s_ab", { name: "???", length: 1, value: 0x2 }, [], []);
+      expect(MergedDisassemblyResult.startMerge(result)).to.be.true;
+    });
+
+    it('should return true for out with a character', () => {
+      const result = new DisassemblyResult(ResultType.Code, 0, "", { name: "out", length: 2, value: 0x13 }, [0x61], [new Character(0x61)]);
+      expect(MergedDisassemblyResult.startMerge(result)).to.be.true;
+    });
+  })
 });

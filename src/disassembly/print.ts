@@ -16,10 +16,6 @@ function toHexString(value: number) {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
 }
 
-function isRegister(value: number) {
-  return value >= 32768 && value <= 32775;
-}
-
 function newLineBefore(result: DisassemblyResult) {
   const label = labels.get(result.address);
   return label.length > 0 && !label.startsWith("_");
@@ -50,30 +46,15 @@ function printLine(result: DisassemblyResult) {
   }
 }
 
-function canMerge(result: DisassemblyResult) {
-  return (result.opcode.value === 19 && labels.get(result.address).length === 0 && !isRegister(result.rawParameters[0]))
-      || (mergedOut.opcode.name === "???" && mergedOut.rawParameters.length < mergedOut.opcode.value);
-}
-
-function startMerge(result: DisassemblyResult) {
-  return (result.opcode.value === 19 && !endMerge(result))
-      || (result.opcode.name === "???" && (labels.get(result.address).startsWith("s_") || labels.get(result.address).startsWith("a_")));
-}
-
-function endMerge(result: DisassemblyResult) {
-  return (result.opcode.value === 19 && (result.rawParameters[0] === 10 || isRegister(result.rawParameters[0])))
-      || (mergedOut && mergedOut.opcode.name === "???" && mergedOut.rawParameters.length == mergedOut.opcode.value);
-}
-
 /** Print the disassembly result
   * Consecutive out opcode are merged (the same for arrays and strings).
   */
 export function printCode(result: DisassemblyResult) {
   if (mergedOut) {
-    if (canMerge(result)) {
+    if (mergedOut.canMerge(result)) {
       mergedOut.merge(result);
 
-      if (endMerge(result)) {
+      if (mergedOut.isStopped()) {
         printLine(mergedOut);
         mergedOut = undefined;
       }
@@ -85,7 +66,7 @@ export function printCode(result: DisassemblyResult) {
     mergedOut = undefined;
   }
 
-  if (startMerge(result)) {
+  if (MergedDisassemblyResult.startMerge(result)) {
     mergedOut = new MergedDisassemblyResult(result);
   } else {
     printLine(result);

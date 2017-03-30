@@ -75,12 +75,18 @@ function toLabeledValue(address: number) {
   return `${address}${suffix}`;
 }
 
+function isRegister(value: number) {
+  return value >= 32768 && value <= 32775;
+}
+
 export class MergedDisassemblyResult extends DisassemblyResult {
   kind: MergedResultKind;
+  private stopped: boolean;
 
   constructor(result: DisassemblyResult) {
     super(result.type, result.address, result.label, result.opcode, result.rawParameters, result.decodedParameters);
     this.kind = getKind(result);
+    this.stopped = false;
 
     if (this.kind === MergedResultKind.Array) {
       this.decodedParameters = [[]];
@@ -95,6 +101,11 @@ export class MergedDisassemblyResult extends DisassemblyResult {
     }
   }
 
+  canMerge(result: DisassemblyResult) {
+    return (result.opcode.value === 19 && labels.get(result.address).length === 0 && !isRegister(result.rawParameters[0]))
+        || (this.opcode.name === "???" && this.rawParameters.length < this.opcode.value);
+  }
+
   merge(result: DisassemblyResult) {
     if (this.kind === MergedResultKind.String) {
       this.rawParameters.push(result.opcode.value);
@@ -106,5 +117,20 @@ export class MergedDisassemblyResult extends DisassemblyResult {
       this.rawParameters.push(result.rawParameters[0]);
       this.decodedParameters[0] = this.decodedParameters[0].toString().slice(0, this.decodedParameters[0].length-1) + result.decodedParameters[0].toString().slice(1);
     }
+
+    this.stopped = MergedDisassemblyResult.stopMerge(result) || (this.opcode.name === "???" && this.rawParameters.length == this.opcode.value);
+  }
+
+  isStopped() {
+    return this.stopped;
+  }
+
+  static startMerge(result: DisassemblyResult) {
+    return (result.opcode.value === 19 && !MergedDisassemblyResult.stopMerge(result))
+        || (result.opcode.name === "???" && (result.label.startsWith("s_") || result.label.startsWith("a_")));
+  }
+
+  static stopMerge(result: DisassemblyResult) {
+    return result.opcode.value === 19 && (result.rawParameters[0] === 10 || isRegister(result.rawParameters[0]))
   }
 }
