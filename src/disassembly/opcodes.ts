@@ -1,6 +1,5 @@
 import { sprintf } from 'sprintf';
 
-import * as labels from '../labels';
 import * as parameters from './parameters';
 
 enum ParameterType {
