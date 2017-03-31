@@ -2,7 +2,6 @@
 import * as prog from 'caporal';
 import * as labels from '../src/labels';
 import { disassembleFile } from '../src/disassembly';
-import { printCode } from '../src/disassembly/print';
 import { GatherAddress } from '../src/disassembly/gatherAddresses';
 import { CodePrinter } from '../src/disassembly/print';
 

@@ -84,21 +84,27 @@ export class MergedDisassemblyResult extends DisassemblyResult {
   private stopped: boolean;
 
   constructor(result: DisassemblyResult) {
-    super(result.type, result.address, result.label, result.opcode, result.rawParameters, result.decodedParameters);
-    this.kind = getKind(result);
-    this.stopped = false;
+    var kind = getKind(result);
+    var decodedParameters: any[] = [];
+    var rawParameters: number[] = [];
 
-    if (this.kind === MergedResultKind.Array) {
-      this.decodedParameters = [[]];
+    if (kind === MergedResultKind.Array) {
+      decodedParameters.push([]);
     } else {
-      this.decodedParameters = ["''"];
+      decodedParameters.push("''");
+
+      if (kind === MergedResultKind.Out)
+      {
+        rawParameters.push(result.rawParameters[0]);
+        decodedParameters[0] = decodedParameters[0].toString().slice(0, decodedParameters[0].length-1) + result.decodedParameters[0].toString().slice(1);
+      }
+
     }
 
-    if (this.kind !== MergedResultKind.Array && this.kind !== MergedResultKind.String)
-    {
-      this.rawParameters.push(result.rawParameters[0]);
-      this.decodedParameters[0] = this.decodedParameters[0].toString().slice(0, this.decodedParameters[0].length-1) + result.decodedParameters[0].toString().slice(1);
-    }
+    super(result.type, result.address, result.label, result.opcode, rawParameters, decodedParameters);
+
+    this.kind = kind;
+    this.stopped = false;
   }
 
   canMerge(result: DisassemblyResult) {
