@@ -1,7 +1,6 @@
 import { sprintf } from 'sprintf';
 import * as chalk from 'chalk';
 
-import * as labels from '../labels';
 import { DisassemblyResult, MergedDisassemblyResult, ResultType, MergedResultKind } from './opcode';
 
 const HALT =  0;
