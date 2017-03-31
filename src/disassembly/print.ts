@@ -25,7 +25,10 @@ export class Printer {
     * Consecutive out opcode are merged (the same for arrays and strings).
     */
   printCode(result: DisassemblyResult) {
-    console.log(this.formatCode(result).join("\n"));
+    const lines = this.formatCode(result);
+    if (lines.length>0) {
+      console.log(lines.join("\n"));
+    }
   }
 
   formatCode(result: DisassemblyResult) {
