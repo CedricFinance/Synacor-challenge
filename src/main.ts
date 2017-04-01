@@ -2,15 +2,12 @@ import * as Promise from 'bluebird';
 
 import { disassemble, printCodeAt } from './disassembly';
 import { loadProgram } from './loader';
+import { Labels } from './labels';
 
 import inputs from './inputs';
 import * as read from './readChar';
 
 const readChar = read.init(inputs, () => { debug_enabled = true; });
-
-const context = {
-  disassemble
-};
 
 var debug_enabled = false
 
@@ -54,12 +51,16 @@ function next() {
   return value;
 }
 
-function* run(program: string, evalCommand: string) {
+function* run(program: string, evalCommand: string, labels: Labels) {
   memory = loadProgram(program);
+
+  const context = {
+    disassemble: (program: number[]) => disassemble(program, labels)
+  };
 
   while (true) {
     if (debug_enabled) {
-      printCodeAt(memory, pc);
+      printCodeAt(memory, pc, labels);
     }
 
     if (evalCommand) {

@@ -9,9 +9,9 @@
     "clean": "rm -rf dist",
     "build": "tsc",
     "start": "ts-node bin/synacor.ts run challenge.bin",
-    "disass": "ts-node bin/synacor.ts disassemble challenge.bin",
-    "startDisass": "ts-node bin/synacor.ts run challenge.bin --eval 'if (pc === 0x3d2) { context.disassemble(memory); exit() }'",
-    "test": "mocha -r ts-node/register test/**/*.ts",
+    "disass": "ts-node bin/synacor.ts disassemble challenge.bin --labels challenge.labels.json",
+    "startDisass": "ts-node bin/synacor.ts run challenge.bin --labels challenge.labels.json --eval 'if (pc === 0x3d2) { context.disassemble(memory); exit() }'",
+    "test": "mocha -r ts-node/register test/*.ts test/**/*.ts",
     "watch": "npm-watch",
     "coverage": "nyc npm test"
   },

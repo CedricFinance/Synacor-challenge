@@ -1,0 +1,1822 @@
+[
+  {
+    "address": "0x0140",
+    "value": "test_jmp"
+  },
+  {
+    "address": "0x015b",
+    "value": "_jmp_1"
+  },
+  {
+    "address": "0x0166",
+    "value": "_jmp_2"
+  },
+  {
+    "address": "0x0170",
+    "value": "_err_jmp_minus_2"
+  },
+  {
+    "address": "0x018d",
+    "value": "_err_jmp_minus_1"
+  },
+  {
+    "address": "0x01a8",
+    "value": "_err_jmp_plus_1"
+  },
+  {
+    "address": "0x01c5",
+    "value": "_err_jmp_plus_2"
+  },
+  {
+    "address": "0x01e4",
+    "value": "test_jt_jf"
+  },
+  {
+    "address": "0x01ef",
+    "value": "label_01ef"
+  },
+  {
+    "address": "0x01f4",
+    "value": "test_registers_initial_value"
+  },
+  {
+    "address": "0x020c",
+    "value": "test_add"
+  },
+  {
+    "address": "0x021f",
+    "value": "_err_no_add"
+  },
+  {
+    "address": "0x0234",
+    "value": "test_eq"
+  },
+  {
+    "address": "0x023b",
+    "value": "_err_no_eq"
+  },
+  {
+    "address": "0x024e",
+    "value": "test_push_pop"
+  },
+  {
+    "address": "0x0264",
+    "value": "test_gt"
+  },
+  {
+    "address": "0x0279",
+    "value": "test_and"
+  },
+  {
+    "address": "0x0284",
+    "value": "test_or"
+  },
+  {
+    "address": "0x028f",
+    "value": "_err_no_or"
+  },
+  {
+    "address": "0x02ac",
+    "value": "test_not"
+  },
+  {
+    "address": "0x02c0",
+    "value": "test_call"
+  },
+  {
+    "address": "0x02c4",
+    "value": "_verify_stack"
+  },
+  {
+    "address": "0x02db",
+    "value": "_verify_stack_2"
+  },
+  {
+    "address": "0x02eb",
+    "value": "test_add_modulo"
+  },
+  {
+    "address": "0x030b",
+    "value": "test_mult"
+  },
+  {
+    "address": "0x0328",
+    "value": "test_mod"
+  },
+  {
+    "address": "0x034b",
+    "value": "rmem_data"
+  },
+  {
+    "address": "0x034d",
+    "value": "test_rmem"
+  },
+  {
+    "address": "0x0365",
+    "value": "test_wmem"
+  },
+  {
+    "address": "0x03ad",
+    "value": "err_wmem"
+  },
+  {
+    "address": "0x03d2",
+    "value": "self_test_completed"
+  },
+  {
+    "address": "0x03e8",
+    "value": "_copy_str_loop"
+  },
+  {
+    "address": "0x03ff",
+    "value": "_copy_str_end"
+  },
+  {
+    "address": "0x0432",
+    "value": "err_no_jt_jf"
+  },
+  {
+    "address": "0x0445",
+    "value": "err_non_zero_register"
+  },
+  {
+    "address": "0x045e",
+    "value": "err_no_set"
+  },
+  {
+    "address": "0x0473",
+    "value": "err_no_gt"
+  },
+  {
+    "address": "0x0486",
+    "value": "err_no_stack"
+  },
+  {
+    "address": "0x0499",
+    "value": "err_no_and"
+  },
+  {
+    "address": "0x04b8",
+    "value": "err_no_not"
+  },
+  {
+    "address": "0x04d7",
+    "value": "err_no_rmem"
+  },
+  {
+    "address": "0x04ee",
+    "value": "err_no_wmem"
+  },
+  {
+    "address": "0x0505",
+    "value": "jumping_function"
+  },
+  {
+    "address": "0x0507",
+    "value": "jumping_function_2"
+  },
+  {
+    "address": "0x0509",
+    "value": "err_no_call"
+  },
+  {
+    "address": "0x0520",
+    "value": "err_no_modulo_add_mult"
+  },
+  {
+    "address": "0x0565",
+    "value": "err_no_hitchhiking"
+  },
+  {
+    "address": "0x0586",
+    "value": "err_no_mult"
+  },
+  {
+    "address": "0x059d",
+    "value": "err_no_mod"
+  },
+  {
+    "address": "0x05b2",
+    "value": "forEach(array:r0, fct:r1)"
+  },
+  {
+    "address": "0x05c8",
+    "value": "_loop"
+  },
+  {
+    "address": "0x05e3",
+    "value": "_end"
+  },
+  {
+    "address": "0x05ee",
+    "value": "printString(r0)"
+  },
+  {
+    "address": "0x05f8",
+    "value": "print(r0)"
+  },
+  {
+    "address": "0x05fb",
+    "value": "decryptAndPrint(value:r0, key:r2)"
+  },
+  {
+    "address": "0x0607",
+    "value": "find(buffer:r0, fct:r1, char:r2)"
+  },
+  {
+    "address": "0x061b",
+    "value": "_not_found"
+  },
+  {
+    "address": "0x061e",
+    "value": "_end"
+  },
+  {
+    "address": "0x0623",
+    "value": "findChar(buffer:r0, char:r1)"
+  },
+  {
+    "address": "0x0634",
+    "value": "fct_0634"
+  },
+  {
+    "address": "0x0645",
+    "value": "equals(value:r0, index:r1, search:r2)"
+  },
+  {
+    "address": "0x0652",
+    "value": "_not_equals"
+  },
+  {
+    "address": "0x0653",
+    "value": "fct_0653"
+  },
+  {
+    "address": "0x066d",
+    "value": "_label_066d"
+  },
+  {
+    "address": "0x0670",
+    "value": "fct_0670"
+  },
+  {
+    "address": "0x0682",
+    "value": "_end"
+  },
+  {
+    "address": "0x0683",
+    "value": "fct_0683"
+  },
+  {
+    "address": "0x06aa",
+    "value": "_label_06aa"
+  },
+  {
+    "address": "0x06af",
+    "value": "_label_06af"
+  },
+  {
+    "address": "0x06b2",
+    "value": "_end"
+  },
+  {
+    "address": "0x06bb",
+    "value": "decrypt"
+  },
+  {
+    "address": "0x06c2",
+    "value": "_decrypt_loop"
+  },
+  {
+    "address": "0x06e7",
+    "value": "readLine(length:r0, buffer:r1)"
+  },
+  {
+    "address": "0x06fb",
+    "value": "_label_06fb"
+  },
+  {
+    "address": "0x0718",
+    "value": "_label_0718"
+  },
+  {
+    "address": "0x071b",
+    "value": "_label_071b"
+  },
+  {
+    "address": "0x0726",
+    "value": "_label_0726"
+  },
+  {
+    "address": "0x0731",
+    "value": "fct_0731"
+  },
+  {
+    "address": "0x073c",
+    "value": "_label_073c"
+  },
+  {
+    "address": "0x0758",
+    "value": "_label_0758"
+  },
+  {
+    "address": "0x075e",
+    "value": "_label_075e"
+  },
+  {
+    "address": "0x07a0",
+    "value": "_label_07a0"
+  },
+  {
+    "address": "0x07d1",
+    "value": "fct_07d1"
+  },
+  {
+    "address": "0x07e3",
+    "value": "_label_07e3"
+  },
+  {
+    "address": "0x07f8",
+    "value": "_label_07f8"
+  },
+  {
+    "address": "0x07ff",
+    "value": "_label_07ff"
+  },
+  {
+    "address": "0x080c",
+    "value": "_label_080c"
+  },
+  {
+    "address": "0x082c",
+    "value": "_label_082c"
+  },
+  {
+    "address": "0x0833",
+    "value": "_label_0833"
+  },
+  {
+    "address": "0x0840",
+    "value": "_label_0840"
+  },
+  {
+    "address": "0x084d",
+    "value": "xor(r0,r1)"
+  },
+  {
+    "address": "0x0865",
+    "value": "fct_0865"
+  },
+  {
+    "address": "0x086e",
+    "value": "fct_086e"
+  },
+  {
+    "address": "0x0882",
+    "value": "fct_0882"
+  },
+  {
+    "address": "0x089c",
+    "value": "_label_089c"
+  },
+  {
+    "address": "0x08a2",
+    "value": "_label_08a2"
+  },
+  {
+    "address": "0x08b9",
+    "value": "_label_08b9"
+  },
+  {
+    "address": "0x08bc",
+    "value": "_label_08bc"
+  },
+  {
+    "address": "0x08c1",
+    "value": "fct_08c1"
+  },
+  {
+    "address": "0x08c8",
+    "value": "fct_08c8"
+  },
+  {
+    "address": "0x08cc",
+    "value": "_label_08cc"
+  },
+  {
+    "address": "0x08e4",
+    "value": "_label_08e4"
+  },
+  {
+    "address": "0x08e9",
+    "value": "fct_08e9"
+  },
+  {
+    "address": "0x08f8",
+    "value": "_label_08f8"
+  },
+  {
+    "address": "0x0905",
+    "value": "_label_0905"
+  },
+  {
+    "address": "0x0908",
+    "value": "_label_0908"
+  },
+  {
+    "address": "0x090d",
+    "value": "d_place_foothills"
+  },
+  {
+    "address": "0x0912",
+    "value": "d_place_foothills2"
+  },
+  {
+    "address": "0x0917",
+    "value": "d_place_dark_cave"
+  },
+  {
+    "address": "0x091c",
+    "value": "d_place_dark_cave2"
+  },
+  {
+    "address": "0x0921",
+    "value": "d_place_dark_cave3"
+  },
+  {
+    "address": "0x0926",
+    "value": "d_place_bridge"
+  },
+  {
+    "address": "0x092b",
+    "value": "d_place_falling"
+  },
+  {
+    "address": "0x0930",
+    "value": "d_place_moss_cavern"
+  },
+  {
+    "address": "0x0935",
+    "value": "d_place_moss_caver2"
+  },
+  {
+    "address": "0x093a",
+    "value": "d_place_moss_cavern3"
+  },
+  {
+    "address": "0x093f",
+    "value": "d_place_passage"
+  },
+  {
+    "address": "0x0944",
+    "value": "d_place_passage2"
+  },
+  {
+    "address": "0x0949",
+    "value": "d_place_twisty_passages"
+  },
+  {
+    "address": "0x094e",
+    "value": "d_place_twisty_passages2"
+  },
+  {
+    "address": "0x0953",
+    "value": "d_place_twisty_passages3"
+  },
+  {
+    "address": "0x0958",
+    "value": "d_place_twisty_passages4"
+  },
+  {
+    "address": "0x095d",
+    "value": "d_place_twisty_passages5"
+  },
+  {
+    "address": "0x0962",
+    "value": "d_place_twisty_passages6"
+  },
+  {
+    "address": "0x0967",
+    "value": "d_place_twisty_passages7"
+  },
+  {
+    "address": "0x096c",
+    "value": "d_place_twisty_passages8"
+  },
+  {
+    "address": "0x0971",
+    "value": "d_place_twisty_passages9"
+  },
+  {
+    "address": "0x0976",
+    "value": "d_place_twisty_passages10"
+  },
+  {
+    "address": "0x097b",
+    "value": "d_place_dark_passage"
+  },
+  {
+    "address": "0x0980",
+    "value": "d_place_dark_passage2"
+  },
+  {
+    "address": "0x0985",
+    "value": "d_place_dark_passage3"
+  },
+  {
+    "address": "0x098a",
+    "value": "d_place_dark_passage4"
+  },
+  {
+    "address": "0x098f",
+    "value": "d_place_ruins"
+  },
+  {
+    "address": "0x0994",
+    "value": "d_place_ruins2"
+  },
+  {
+    "address": "0x0999",
+    "value": "d_place_ruins3"
+  },
+  {
+    "address": "0x099f",
+    "value": "d_place_ruins4"
+  },
+  {
+    "address": "0x09a4",
+    "value": "d_place_ruins5"
+  },
+  {
+    "address": "0x09a9",
+    "value": "d_place_ruins5"
+  },
+  {
+    "address": "0x09ae",
+    "value": "d_place_ruins6"
+  },
+  {
+    "address": "0x09b3",
+    "value": "d_place_ruins7"
+  },
+  {
+    "address": "0x09b8",
+    "value": "d_place_synacor_hq"
+  },
+  {
+    "address": "0x09bd",
+    "value": "d_place_synacor_hq2"
+  },
+  {
+    "address": "0x09c2",
+    "value": "d_place_beach"
+  },
+  {
+    "address": "0x09c7",
+    "value": "d_place_beach2"
+  },
+  {
+    "address": "0x09cc",
+    "value": "d_place_beach3"
+  },
+  {
+    "address": "0x09d1",
+    "value": "d_place_tropical_island"
+  },
+  {
+    "address": "0x09d6",
+    "value": "d_place_tropical_island2"
+  },
+  {
+    "address": "0x09db",
+    "value": "d_place_tropical_island3"
+  },
+  {
+    "address": "0x09e0",
+    "value": "d_place_tropical_island4"
+  },
+  {
+    "address": "0x09e5",
+    "value": "d_place_tropical_island5"
+  },
+  {
+    "address": "0x09ea",
+    "value": "d_place_tropical_cave"
+  },
+  {
+    "address": "0x09ef",
+    "value": "d_place_tropical_cave2"
+  },
+  {
+    "address": "0x09f4",
+    "value": "d_place_tropical_cave3"
+  },
+  {
+    "address": "0x09f9",
+    "value": "d_place_tropical_cave_alcove"
+  },
+  {
+    "address": "0x09fa",
+    "value": "d_place_tropical_cave_alcove_desc"
+  },
+  {
+    "address": "0x09fe",
+    "value": "d_place_tropical_cave"
+  },
+  {
+    "address": "0x09ff",
+    "value": "d_place_tropical_cave_desc"
+  },
+  {
+    "address": "0x0a12",
+    "value": "d_place_vault_door"
+  },
+  {
+    "address": "0x0a5d",
+    "value": "d_place_fumbling"
+  },
+  {
+    "address": "0x0a62",
+    "value": "d_place_panicked"
+  },
+  {
+    "address": "0x0a67",
+    "value": "d_place_eaten"
+  },
+  {
+    "address": "0x0a6c",
+    "value": "d_obj_tablet"
+  },
+  {
+    "address": "0x0a70",
+    "value": "d_obj_empty_lantern"
+  },
+  {
+    "address": "0x0a74",
+    "value": "d_obj_lantern"
+  },
+  {
+    "address": "0x0a78",
+    "value": "d_obj_lit_lantern"
+  },
+  {
+    "address": "0x0aac",
+    "value": "p_current_place"
+  },
+  {
+    "address": "0x0aad",
+    "value": "p_previous_place"
+  },
+  {
+    "address": "0x0aae",
+    "value": "label_0aae"
+  },
+  {
+    "address": "0x0ab6",
+    "value": "_label_0ab6"
+  },
+  {
+    "address": "0x0ad2",
+    "value": "_label_0ad2"
+  },
+  {
+    "address": "0x0ae7",
+    "value": "_label_0ae7"
+  },
+  {
+    "address": "0x0b20",
+    "value": "_space_found"
+  },
+  {
+    "address": "0x0b45",
+    "value": "_label_0b45"
+  },
+  {
+    "address": "0x0b6c",
+    "value": "_label_0b6c"
+  },
+  {
+    "address": "0x0b7b",
+    "value": "_label_0b7b"
+  },
+  {
+    "address": "0x0b80",
+    "value": "_label_0b80"
+  },
+  {
+    "address": "0x0b86",
+    "value": "_label_0b86"
+  },
+  {
+    "address": "0x0b94",
+    "value": "fct_0b94"
+  },
+  {
+    "address": "0x0bbe",
+    "value": "_label_0bbe"
+  },
+  {
+    "address": "0x0bd8",
+    "value": "_print_place_infos"
+  },
+  {
+    "address": "0x0c20",
+    "value": "_print_place_desc"
+  },
+  {
+    "address": "0x0c4a",
+    "value": "_label_0c4a"
+  },
+  {
+    "address": "0x0c75",
+    "value": "_label_0c75"
+  },
+  {
+    "address": "0x0c79",
+    "value": "_label_0c79"
+  },
+  {
+    "address": "0x0c90",
+    "value": "_label_0c90"
+  },
+  {
+    "address": "0x0ca6",
+    "value": "_end"
+  },
+  {
+    "address": "0x0cad",
+    "value": "fct_0cad"
+  },
+  {
+    "address": "0x0ce6",
+    "value": "_label_0ce6"
+  },
+  {
+    "address": "0x0cfe",
+    "value": "_end"
+  },
+  {
+    "address": "0x0d05",
+    "value": "printHelp"
+  },
+  {
+    "address": "0x0d22",
+    "value": "fct_0d22"
+  },
+  {
+    "address": "0x0d48",
+    "value": "fct_0d48"
+  },
+  {
+    "address": "0x0d81",
+    "value": "_label_0d81"
+  },
+  {
+    "address": "0x0d99",
+    "value": "_end"
+  },
+  {
+    "address": "0x0da0",
+    "value": "fct_0da0"
+  },
+  {
+    "address": "0x0dd3",
+    "value": "_label_0dd3"
+  },
+  {
+    "address": "0x0deb",
+    "value": "_end"
+  },
+  {
+    "address": "0x0df0",
+    "value": "fct_0df0"
+  },
+  {
+    "address": "0x0e11",
+    "value": "_label_0e11"
+  },
+  {
+    "address": "0x0e2b",
+    "value": "_label_0e2b"
+  },
+  {
+    "address": "0x0e43",
+    "value": "_end"
+  },
+  {
+    "address": "0x0e48",
+    "value": "fct_0e48"
+  },
+  {
+    "address": "0x0e6e",
+    "value": "_end"
+  },
+  {
+    "address": "0x0e75",
+    "value": "fct_0e75"
+  },
+  {
+    "address": "0x0e8f",
+    "value": "fct_0e8f"
+  },
+  {
+    "address": "0x0f64",
+    "value": "_end"
+  },
+  {
+    "address": "0x107a",
+    "value": "label_107a"
+  },
+  {
+    "address": "0x10b0",
+    "value": "label_10b0"
+  },
+  {
+    "address": "0x10b7",
+    "value": "label_10b7"
+  },
+  {
+    "address": "0x1111",
+    "value": "label_1111"
+  },
+  {
+    "address": "0x1121",
+    "value": "label_1121"
+  },
+  {
+    "address": "0x1127",
+    "value": "label_1127"
+  },
+  {
+    "address": "0x112e",
+    "value": "label_112e"
+  },
+  {
+    "address": "0x1135",
+    "value": "label_1135"
+  },
+  {
+    "address": "0x1152",
+    "value": "label_1152"
+  },
+  {
+    "address": "0x11a3",
+    "value": "label_11a3"
+  },
+  {
+    "address": "0x11b5",
+    "value": "label_11b5"
+  },
+  {
+    "address": "0x11d5",
+    "value": "label_11d5"
+  },
+  {
+    "address": "0x11de",
+    "value": "label_11de"
+  },
+  {
+    "address": "0x11f4",
+    "value": "label_11f4"
+  },
+  {
+    "address": "0x1200",
+    "value": "label_1200"
+  },
+  {
+    "address": "0x1203",
+    "value": "label_1203"
+  },
+  {
+    "address": "0x1225",
+    "value": "label_1225"
+  },
+  {
+    "address": "0x122a",
+    "value": "label_122a"
+  },
+  {
+    "address": "0x1231",
+    "value": "label_1231"
+  },
+  {
+    "address": "0x1234",
+    "value": "label_1234"
+  },
+  {
+    "address": "0x126d",
+    "value": "label_126d"
+  },
+  {
+    "address": "0x12fa",
+    "value": "label_12fa"
+  },
+  {
+    "address": "0x1312",
+    "value": "label_1312"
+  },
+  {
+    "address": "0x1371",
+    "value": "label_1371"
+  },
+  {
+    "address": "0x1399",
+    "value": "label_1399"
+  },
+  {
+    "address": "0x14c0",
+    "value": "label_14c0"
+  },
+  {
+    "address": "0x14d8",
+    "value": "label_14d8"
+  },
+  {
+    "address": "0x15cb",
+    "value": "label_15cb"
+  },
+  {
+    "address": "0x15e5",
+    "value": "label_15e5"
+  },
+  {
+    "address": "0x1604",
+    "value": "label_1604"
+  },
+  {
+    "address": "0x1652",
+    "value": "label_1652"
+  },
+  {
+    "address": "0x16b6",
+    "value": "label_16b6"
+  },
+  {
+    "address": "0x16bf",
+    "value": "label_16bf"
+  },
+  {
+    "address": "0x16ef",
+    "value": "label_16ef"
+  },
+  {
+    "address": "0x16f4",
+    "value": "label_16f4"
+  },
+  {
+    "address": "0x171e",
+    "value": "label_171e"
+  },
+  {
+    "address": "0x1721",
+    "value": "label_1721"
+  },
+  {
+    "address": "0x1744",
+    "value": "label_1744"
+  },
+  {
+    "address": "0x1747",
+    "value": "label_1747"
+  },
+  {
+    "address": "0x1765",
+    "value": "label_1765"
+  },
+  {
+    "address": "0x1766",
+    "value": "label_1766"
+  },
+  {
+    "address": "0x1783",
+    "value": "label_1783"
+  },
+  {
+    "address": "0x1786",
+    "value": "label_1786"
+  },
+  {
+    "address": "0x178b",
+    "value": "label_178b"
+  },
+  {
+    "address": "0x1793",
+    "value": "label_1793"
+  },
+  {
+    "address": "0x17a0",
+    "value": "label_17a0"
+  },
+  {
+    "address": "0x17b4",
+    "value": "s_test_string"
+  },
+  {
+    "address": "0x17c0",
+    "value": "s_self_test_result"
+  },
+  {
+    "address": "0x17d3",
+    "value": "s_all_tests_pass"
+  },
+  {
+    "address": "0x17e4",
+    "value": "s_complete"
+  },
+  {
+    "address": "0x17ed",
+    "value": "a_???"
+  },
+  {
+    "address": "0x17f1",
+    "value": "a_???"
+  },
+  {
+    "address": "0x17fe",
+    "value": "s_foothills"
+  },
+  {
+    "address": "0x1808",
+    "value": "s_foothills_desc"
+  },
+  {
+    "address": "0x18c0",
+    "value": "s_foothills_doorway"
+  },
+  {
+    "address": "0x18c8",
+    "value": "s_foothills_south"
+  },
+  {
+    "address": "0x18ce",
+    "value": "s_foothills2"
+  },
+  {
+    "address": "0x18d8",
+    "value": "s_foothills2_desc"
+  },
+  {
+    "address": "0x1923",
+    "value": "s_foothills2_north"
+  },
+  {
+    "address": "0x1929",
+    "value": "s_dark_cave"
+  },
+  {
+    "address": "0x1933",
+    "value": "s_dark_cave_desc"
+  },
+  {
+    "address": "0x19b9",
+    "value": "s_dark_cave_north"
+  },
+  {
+    "address": "0x19bf",
+    "value": "s_dark_cave_south"
+  },
+  {
+    "address": "0x19c5",
+    "value": "s_dark_cave2"
+  },
+  {
+    "address": "0x19cf",
+    "value": "s_dark_cave2_desc"
+  },
+  {
+    "address": "0x1a2b",
+    "value": "s_dark_cave2_north"
+  },
+  {
+    "address": "0x1a31",
+    "value": "s_dark_cave2_south"
+  },
+  {
+    "address": "0x1a37",
+    "value": "s_dark_cave3"
+  },
+  {
+    "address": "0x1a41",
+    "value": "s_dark_cave3_desc"
+  },
+  {
+    "address": "0x1afd",
+    "value": "s_dark_cave3_bridge"
+  },
+  {
+    "address": "0x1b04",
+    "value": "s_dark_cave3_south"
+  },
+  {
+    "address": "0x1b0a",
+    "value": "s_bridge"
+  },
+  {
+    "address": "0x1b16",
+    "value": "s_bridge_desc"
+  },
+  {
+    "address": "0x1b90",
+    "value": "s_bridge_continue"
+  },
+  {
+    "address": "0x1b99",
+    "value": "s_bridge_back"
+  },
+  {
+    "address": "0x1b9e",
+    "value": "s_falling"
+  },
+  {
+    "address": "0x1bb7",
+    "value": "s_falling_desc"
+  },
+  {
+    "address": "0x1c61",
+    "value": "s_falling_desc_down"
+  },
+  {
+    "address": "0x1c66",
+    "value": "s_moss_carvern"
+  },
+  {
+    "address": "0x1c72",
+    "value": "s_moss_carvern_desc"
+  },
+  {
+    "address": "0x1d44",
+    "value": "s_moss_carvern_west"
+  },
+  {
+    "address": "0x1d49",
+    "value": "s_moss_carvern_east"
+  },
+  {
+    "address": "0x1d4e",
+    "value": "s_moss_carvern2"
+  },
+  {
+    "address": "0x1d5a",
+    "value": "s_moss_carvern2_desc"
+  },
+  {
+    "address": "0x1dbb",
+    "value": "s_moss_carvern2_west"
+  },
+  {
+    "address": "0x1dc0",
+    "value": "s_moss_carvern3"
+  },
+  {
+    "address": "0x1dcc",
+    "value": "s_moss_carvern3_desc"
+  },
+  {
+    "address": "0x1e6a",
+    "value": "s_moss_carvern3_east"
+  },
+  {
+    "address": "0x1e6f",
+    "value": "s_moss_carvern3_passage"
+  },
+  {
+    "address": "0x1e77",
+    "value": "s_passage"
+  },
+  {
+    "address": "0x1e7f",
+    "value": "s_passage_desc"
+  },
+  {
+    "address": "0x1f30",
+    "value": "s_passage_cavern"
+  },
+  {
+    "address": "0x1f37",
+    "value": "s_passage_ladder"
+  },
+  {
+    "address": "0x1f3e",
+    "value": "s_passage_darkness"
+  },
+  {
+    "address": "0x1f47",
+    "value": "s_passage2"
+  },
+  {
+    "address": "0x1f4f",
+    "value": "s_passage2_desc"
+  },
+  {
+    "address": "0x1f89",
+    "value": "s_??"
+  },
+  {
+    "address": "0x1fd5",
+    "value": "s_passage2_continue"
+  },
+  {
+    "address": "0x1fde",
+    "value": "s_passage2_back"
+  },
+  {
+    "address": "0x1fe3",
+    "value": "s_twisty_passages"
+  },
+  {
+    "address": "0x1ff3",
+    "value": "s_twisty_passages_desc"
+  },
+  {
+    "address": "0x206f",
+    "value": "s_twisty_passages_ladder"
+  },
+  {
+    "address": "0x2076",
+    "value": "s_twisty_passages_north"
+  },
+  {
+    "address": "0x207c",
+    "value": "s_twisty_passages_south"
+  },
+  {
+    "address": "0x2082",
+    "value": "s_twisty_passages_est"
+  },
+  {
+    "address": "0x2087",
+    "value": "s_twisty_passages_west"
+  },
+  {
+    "address": "0x208c",
+    "value": "s_twisty_passages2"
+  },
+  {
+    "address": "0x209c",
+    "value": "s_twisty_passages2_desc"
+  },
+  {
+    "address": "0x20e5",
+    "value": "s_twisty_passages3"
+  },
+  {
+    "address": "0x213e",
+    "value": "s_twisty_passages4"
+  },
+  {
+    "address": "0x21e1",
+    "value": "s_twisty_passages5"
+  },
+  {
+    "address": "0x223a",
+    "value": "s_twisty_passages6"
+  },
+  {
+    "address": "0x22e4",
+    "value": "s_twisty_passages7"
+  },
+  {
+    "address": "0x233d",
+    "value": "s_twisty_passages8"
+  },
+  {
+    "address": "0x238a",
+    "value": "s_twisty_passages9"
+  },
+  {
+    "address": "0x23d7",
+    "value": "s_twisty_passages10"
+  },
+  {
+    "address": "0x242b",
+    "value": "s_dark_passage"
+  },
+  {
+    "address": "0x24b5",
+    "value": "s_dark_passage2"
+  },
+  {
+    "address": "0x24ef",
+    "value": "s_dark_passage3"
+  },
+  {
+    "address": "0x2529",
+    "value": "s_dark_passage4"
+  },
+  {
+    "address": "0x25a5",
+    "value": "s_ruins"
+  },
+  {
+    "address": "0x26af",
+    "value": "s_ruins2"
+  },
+  {
+    "address": "0x2777",
+    "value": "s_ruins3"
+  },
+  {
+    "address": "0x28b9",
+    "value": "s_ruins4"
+  },
+  {
+    "address": "0x296d",
+    "value": "s_ruins5"
+  },
+  {
+    "address": "0x2a08",
+    "value": "s_ruins5"
+  },
+  {
+    "address": "0x2a8c",
+    "value": "s_ruins6"
+  },
+  {
+    "address": "0x2b4e",
+    "value": "s_ruins7"
+  },
+  {
+    "address": "0x2c03",
+    "value": "s_synacor_hq"
+  },
+  {
+    "address": "0x2d20",
+    "value": "s_synacor_hq2"
+  },
+  {
+    "address": "0x2dce",
+    "value": "s_beach"
+  },
+  {
+    "address": "0x2e8f",
+    "value": "s_beach2"
+  },
+  {
+    "address": "0x2fa7",
+    "value": "s_beach3"
+  },
+  {
+    "address": "0x30ab",
+    "value": "s_tropical_island"
+  },
+  {
+    "address": "0x3193",
+    "value": "s_tropical_island2"
+  },
+  {
+    "address": "0x322f",
+    "value": "s_tropical_island3"
+  },
+  {
+    "address": "0x3332",
+    "value": "s_tropical_island4"
+  },
+  {
+    "address": "0x346c",
+    "value": "s_tropical_island5"
+  },
+  {
+    "address": "0x357e",
+    "value": "s_tropical_cave"
+  },
+  {
+    "address": "0x3675",
+    "value": "s_tropical_cave2"
+  },
+  {
+    "address": "0x370a",
+    "value": "s_tropical_cave3"
+  },
+  {
+    "address": "0x386c",
+    "value": "s_tropical_cave_alcove"
+  },
+  {
+    "address": "0x3881",
+    "value": "s_tropical_cave_alcove_desc"
+  },
+  {
+    "address": "0x3925",
+    "value": "s_tropical_cave_alcove_west"
+  },
+  {
+    "address": "0x392a",
+    "value": "s_tropical_cave"
+  },
+  {
+    "address": "0x3938",
+    "value": "s_tropical_cave_desc"
+  },
+  {
+    "address": "0x39a1",
+    "value": "s_tropical_cave_north"
+  },
+  {
+    "address": "0x39a7",
+    "value": "s_tropical_cave_south"
+  },
+  {
+    "address": "0x3b7e",
+    "value": "s_vault_door"
+  },
+  {
+    "address": "0x3b89",
+    "value": "s_vault_door_desc"
+  },
+  {
+    "address": "0x458e",
+    "value": "s_fumbling"
+  },
+  {
+    "address": "0x45ae",
+    "value": "s_fumbling_desc"
+  },
+  {
+    "address": "0x460d",
+    "value": "s_run"
+  },
+  {
+    "address": "0x4611",
+    "value": "s_investigate"
+  },
+  {
+    "address": "0x461d",
+    "value": "s_panicked_lost"
+  },
+  {
+    "address": "0x462f",
+    "value": "s_panicked_lost_desc"
+  },
+  {
+    "address": "0x4679",
+    "value": "s_run"
+  },
+  {
+    "address": "0x467d",
+    "value": "s_wait"
+  },
+  {
+    "address": "0x4682",
+    "value": "s_hide"
+  },
+  {
+    "address": "0x4687",
+    "value": "s_eaten"
+  },
+  {
+    "address": "0x468d",
+    "value": "s_eaten_desc"
+  },
+  {
+    "address": "0x468e",
+    "value": "s_tablet"
+  },
+  {
+    "address": "0x4695",
+    "value": "s_tablet_desc"
+  },
+  {
+    "address": "0x471e",
+    "value": "s_empty_lantern"
+  },
+  {
+    "address": "0x472c",
+    "value": "s_empty_lantern_desc"
+  },
+  {
+    "address": "0x47a8",
+    "value": "s_lantern"
+  },
+  {
+    "address": "0x47b0",
+    "value": "s_lantern_desc"
+  },
+  {
+    "address": "0x4824",
+    "value": "s_lit_lantern"
+  },
+  {
+    "address": "0x4830",
+    "value": "s_lit_lantern_desc"
+  },
+  {
+    "address": "0x4af8",
+    "value": "s_orb"
+  },
+  {
+    "address": "0x4afc",
+    "value": "s_orb_desc"
+  },
+  {
+    "address": "0x4b3a",
+    "value": "s_mirror"
+  },
+  {
+    "address": "0x4b41",
+    "value": "s_mirror_desc"
+  },
+  {
+    "address": "0x4bb8",
+    "value": "s_book"
+  },
+  {
+    "address": "0x4bc5",
+    "value": "s_book_content"
+  },
+  {
+    "address": "0x564d",
+    "value": "s_journal"
+  },
+  {
+    "address": "0x5655",
+    "value": "s_journal_content"
+  },
+  {
+    "address": "0x650a",
+    "value": "s_letters"
+  },
+  {
+    "address": "0x6557",
+    "value": "s_cmd_go"
+  },
+  {
+    "address": "0x655a",
+    "value": "s_cmd_look"
+  },
+  {
+    "address": "0x655f",
+    "value": "s_cmd_help"
+  },
+  {
+    "address": "0x6564",
+    "value": "s_cmd_inv"
+  },
+  {
+    "address": "0x6568",
+    "value": "s_cmd_take"
+  },
+  {
+    "address": "0x656d",
+    "value": "s_cmd_drop"
+  },
+  {
+    "address": "0x6572",
+    "value": "s_cmd_use"
+  },
+  {
+    "address": "0x6576",
+    "value": "a_input_buffer"
+  },
+  {
+    "address": "0x6597",
+    "value": "s_green"
+  },
+  {
+    "address": "0x659d",
+    "value": "s_red"
+  },
+  {
+    "address": "0x65a1",
+    "value": "s_yellow"
+  },
+  {
+    "address": "0x65a8",
+    "value": "s_???"
+  },
+  {
+    "address": "0x65e8",
+    "value": "s_???"
+  },
+  {
+    "address": "0x660a",
+    "value": "s_???"
+  },
+  {
+    "address": "0x663a",
+    "value": "s_???"
+  },
+  {
+    "address": "0x667b",
+    "value": "s_???"
+  },
+  {
+    "address": "0x669b",
+    "value": "s_???"
+  },
+  {
+    "address": "0x66bb",
+    "value": "s_???"
+  },
+  {
+    "address": "0x66d1",
+    "value": "s_???"
+  },
+  {
+    "address": "0x66f2",
+    "value": "s_???"
+  },
+  {
+    "address": "0x671e",
+    "value": "s_???"
+  },
+  {
+    "address": "0x68e3",
+    "value": "a_crypted_self_test_code"
+  },
+  {
+    "address": "0x6914",
+    "value": "a_s_foothills_actions"
+  },
+  {
+    "address": "0x6917",
+    "value": "a_s_foothills_actions_results"
+  },
+  {
+    "address": "0x691a",
+    "value": "a_s_foothills2_actions"
+  },
+  {
+    "address": "0x691c",
+    "value": "a_s_foothills2_actions_results"
+  },
+  {
+    "address": "0x691e",
+    "value": "a_s_dark_cave_actions"
+  },
+  {
+    "address": "0x6921",
+    "value": "a_s_dark_cave_actions_results"
+  },
+  {
+    "address": "0x6924",
+    "value": "a_s_dark_cave2_actions"
+  },
+  {
+    "address": "0x6927",
+    "value": "a_s_dark_cave2_actions_results"
+  },
+  {
+    "address": "0x692a",
+    "value": "a_s_dark_cave3_actions"
+  },
+  {
+    "address": "0x692d",
+    "value": "a_s_dark_cave3_actions_results"
+  },
+  {
+    "address": "0x6930",
+    "value": "a_s_bridge_actions"
+  },
+  {
+    "address": "0x6933",
+    "value": "a_s_bridge_actions_results"
+  },
+  {
+    "address": "0x6936",
+    "value": "a_s_falling_actions"
+  },
+  {
+    "address": "0x6938",
+    "value": "a_s_falling_actions_results"
+  },
+  {
+    "address": "0x693a",
+    "value": "a_s_moss_cavern_actions"
+  },
+  {
+    "address": "0x693d",
+    "value": "a_s_moss_cavern_actions_results"
+  },
+  {
+    "address": "0x6940",
+    "value": "a_s_moss_cavern2_actions"
+  },
+  {
+    "address": "0x6942",
+    "value": "a_d_moss_cavern2_actions_results"
+  },
+  {
+    "address": "0x6944",
+    "value": "a_s_moss_cavern3_actions"
+  },
+  {
+    "address": "0x6947",
+    "value": "a_d_moss_cavern3_actions_results"
+  },
+  {
+    "address": "0x694a",
+    "value": "a_s_passage_actions"
+  },
+  {
+    "address": "0x694e",
+    "value": "a_s_passage_actions_results"
+  },
+  {
+    "address": "0x6952",
+    "value": "a_s_passage2_descs"
+  },
+  {
+    "address": "0x6955",
+    "value": "a_s_passage2_actions"
+  },
+  {
+    "address": "0x6958",
+    "value": "a_d_passage2_actions_results"
+  },
+  {
+    "address": "0x695b",
+    "value": "a_s_twisty_passages_actions"
+  },
+  {
+    "address": "0x6961",
+    "value": "a_d_twisty_passages_actions_results"
+  },
+  {
+    "address": "0x6aeb",
+    "value": "a_s_panicked_lost_actions"
+  },
+  {
+    "address": "0x6aef",
+    "value": "a_d_panicked_lost_actions_results"
+  },
+  {
+    "address": "0x6af3",
+    "value": "a_s_eaten_actions"
+  },
+  {
+    "address": "0x6af4",
+    "value": "a_d_eaten_actions_results"
+  },
+  {
+    "address": "0x6af5",
+    "value": "a_d_objects"
+  },
+  {
+    "address": "0x6b06",
+    "value": "a_a_cmds"
+  },
+  {
+    "address": "0x6b0e",
+    "value": "a_6b0e"
+  },
+  {
+    "address": "0x6b8c",
+    "value": "a_crypted_help_text"
+  },
+  {
+    "address": "0x7007",
+    "value": "a_???"
+  },
+  {
+    "address": "0x7026",
+    "value": "a_???"
+  },
+  {
+    "address": "0x7069",
+    "value": "a_???"
+  },
+  {
+    "address": "0x70ac",
+    "value": "a_???"
+  },
+  {
+    "address": "0x7156",
+    "value": "a_???"
+  },
+  {
+    "address": "0x7239",
+    "value": "a_???"
+  },
+  {
+    "address": "0x723d",
+    "value": "a_???"
+  },
+  {
+    "address": "0x72d8",
+    "value": "a_???"
+  },
+  {
+    "address": "0x7369",
+    "value": "a_???"
+  },
+  {
+    "address": "0x73df",
+    "value": "a_???"
+  },
+  {
+    "address": "0x73e3",
+    "value": "a_???"
+  },
+  {
+    "address": "0x743d",
+    "value": "a_???"
+  },
+  {
+    "address": "0x74f6",
+    "value": "a_???"
+  },
+  {
+    "address": "0x74fa",
+    "value": "a_???"
+  }
+]

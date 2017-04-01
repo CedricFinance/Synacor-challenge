@@ -1,14 +1,14 @@
 import { sprintf } from 'sprintf';
 
-import { format } from '../labels';
+import { Labels } from '../labels';
 import { DisassemblyResult } from './opcode';
 
 export class GatherAddress {
 
-  result: Map<number, string>
+  labels: Labels
 
-  constructor(existingLabels: Map<number, string>) {
-    this.result = new Map(existingLabels);
+  constructor(existingLabels: Labels) {
+    this.labels = existingLabels;
   }
 
   start() {}
@@ -28,12 +28,12 @@ export class GatherAddress {
     }
 
 
-    if (address < 0x8000 && !this.result.has(address)) {
-      this.result.set(address, sprintf("label_%04x", address));
+    if (address < 0x8000 && !this.labels.has(address)) {
+      this.labels.set(address, sprintf("label_%04x", address));
     }
   }
 
   end() {
-    format(this.result);
+    console.log(this.labels.toJSON());
   }
 }

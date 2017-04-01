@@ -8,6 +8,10 @@ interface Parameter {
   toString(context: Context): string;
 }
 
+function safeStringFromCharCode(charCode: number) {
+  return charCode === 10 ? "'\\n'" : `'${String.fromCharCode(charCode)}'`
+}
+
 function toHexString(value: number): string {
   return typeof value !== "undefined" ? sprintf("%04x", value) : ""
 }
@@ -75,6 +79,18 @@ export class Character implements Parameter {
   }
 
   toString(context: Context) {
-    return this.charCode === 10 ? "'\\n'" : `'${String.fromCharCode(this.charCode)}'`
+    return safeStringFromCharCode(this.charCode);
+  }
+}
+
+export class Data implements Parameter {
+  private data: number;
+
+  constructor(data: number) {
+    this.data = data;
+  }
+
+  toString(context: Context) {
+    return `${this.data} ${safeStringFromCharCode(this.data)} ${context.labels.get(this.data)}`
   }
 }

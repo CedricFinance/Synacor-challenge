@@ -1,3 +1,6 @@
+import { Labels } from '../labels';
+import { Value } from './parameters';
+
 interface Opcode {
   name: string
   value: number,
@@ -7,6 +10,10 @@ interface Opcode {
 
 export enum ResultType {
   Code, Data
+}
+
+export interface DisassemblyContext {
+  labels: Labels
 }
 
 export class DisassemblyResult {
@@ -28,7 +35,7 @@ export class DisassemblyResult {
     this.decodedParameters = decodedParameters;
   }
 
-  toCode() {
+  toCode(context: DisassemblyContext) {
     var codeParts: string[] = [];
 
     if (this.opcode.name !== "???") {
@@ -36,7 +43,12 @@ export class DisassemblyResult {
     }
 
     if (this.decodedParameters.length > 0) {
-      codeParts.push(this.decodedParameters.map(p => p.toString({ labels })).join(" "));
+      codeParts.push(this.decodedParameters.map(p => {
+        if (p instanceof Array) {
+          return p.map(i => i.toString(context));
+        }
+        return p.toString(context);
+      }).join(" "));
     }
 
     return codeParts.join(" ");
@@ -62,17 +74,6 @@ function getKind(result: DisassemblyResult) {
 
 function safeStringFromCharCode(charCode: number) {
   return charCode === 10 ? "'\\n'" : `'${String.fromCharCode(charCode)}'`
-}
-
-function toLabeledValue(address: number) {
-  let suffix = '';
-  const label = labels.get(address);
-
-  if (label.length > 0) {
-    suffix = ` /* = ${label} */`;
-  }
-
-  return `${address}${suffix}`;
 }
 
 function isRegister(value: number) {
@@ -107,8 +108,8 @@ export class MergedDisassemblyResult extends DisassemblyResult {
     this.stopped = false;
   }
 
-  canMerge(result: DisassemblyResult) {
-    return (result.opcode.value === 19 && labels.get(result.address).length === 0 && !isRegister(result.rawParameters[0]))
+  canMerge(result: DisassemblyResult, context: DisassemblyContext) {
+    return (result.opcode.value === 19 && context.labels.get(result.address).length === 0 && !isRegister(result.rawParameters[0]))
         || (this.opcode.name === "???" && this.rawParameters.length < this.opcode.value);
   }
 
@@ -118,7 +119,7 @@ export class MergedDisassemblyResult extends DisassemblyResult {
       this.decodedParameters[0] = this.decodedParameters[0].slice(0, this.decodedParameters[0].length-1) + safeStringFromCharCode(result.opcode.value).slice(1);
     } else if (this.kind === MergedResultKind.Array) {
       this.rawParameters.push(result.opcode.value);
-      this.decodedParameters[0].push(toLabeledValue(result.opcode.value));
+      this.decodedParameters[0].push(new Value(result.opcode.value));
     } else {
       this.rawParameters.push(result.rawParameters[0]);
       this.decodedParameters[0] = this.decodedParameters[0].toString().slice(0, this.decodedParameters[0].length-1) + result.decodedParameters[0].toString().slice(1);

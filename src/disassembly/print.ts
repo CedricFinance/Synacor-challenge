@@ -1,7 +1,8 @@
 import { sprintf } from 'sprintf';
 import * as chalk from 'chalk';
 
-import { DisassemblyResult, MergedDisassemblyResult, ResultType, MergedResultKind } from './opcode';
+import { DisassemblyResult, MergedDisassemblyResult, ResultType, MergedResultKind, DisassemblyContext } from './opcode';
+import { Labels } from '../labels';
 
 const HALT =  0;
 const RET  = 18;
@@ -19,7 +20,11 @@ function newLineBefore(result: DisassemblyResult) {
 export class Printer {
   mergedOut: MergedDisassemblyResult;
   private emptyLine = false;
+  context: DisassemblyContext;
 
+  constructor() {
+    this.context = { labels: new Labels() };
+  }
 
   /** Print the disassembly result
     * Consecutive out opcode are merged (the same for arrays and strings).
@@ -35,7 +40,7 @@ export class Printer {
     var lines: string[] = [];
 
     if (this.mergedOut) {
-      if (this.mergedOut.canMerge(result)) {
+      if (this.mergedOut.canMerge(result, this.context)) {
         this.mergedOut.merge(result);
 
         if (this.mergedOut.isStopped()) {
@@ -77,7 +82,7 @@ export class Printer {
       toHexString(result.rawParameters[1]),
       toHexString(result.rawParameters[2]),
       result.label,
-      result.toCode()
+      result.toCode(this.context)
     )));
 
     if (result.opcode.name !== "???" && newlineOpcodes.includes(result.opcode.value)) {
@@ -104,7 +109,7 @@ export class CodePrinter {
 
   end() {
     if (this.printer.mergedOut) {
-      console.log(this.printer.formatResult(null));
+      console.log(this.printer.formatResult(this.printer.mergedOut));
     }
   }
 }
